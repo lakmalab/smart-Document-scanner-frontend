@@ -1,0 +1,17 @@
+.navbar {
+  height: 64px;
+}
+
+.nav-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.btn-dark {
+  background-color: #2d1d13; /* dark brown as seen in image */
+  border: none;
+}
