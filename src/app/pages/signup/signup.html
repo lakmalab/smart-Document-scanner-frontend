@@ -1,0 +1,29 @@
+<div class="signup-page d-flex vh-100">
+  <div class="signup-form-section d-flex flex-column justify-content-center align-items-center bg-white col-md-6 p-5">
+    <h2 class="fw-bold mb-4">Sign Up</h2>
+
+    <form class="w-100" style="max-width: 350px;" (ngSubmit)="onRegister()">
+      <div class="mb-3">
+        <input type="text" name="name" [(ngModel)]="name" class="form-control rounded-pill" placeholder="Full Name" required />
+      </div>
+      <div class="mb-3">
+        <input type="email" name="email" [(ngModel)]="email" class="form-control rounded-pill" placeholder="Email" required />
+      </div>
+      <div class="mb-3">
+        <input type="password" name="password" [(ngModel)]="password" class="form-control rounded-pill" placeholder="Password" required />
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 rounded-pill">Create Account</button>
+
+      <div *ngIf="errorMessage" class="text-danger mt-3 text-center">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="text-success mt-3 text-center">{{ successMessage }}</div>
+    </form>
+  </div>
+
+  <div class="right-banner d-none d-md-flex col-md-6 bg-primary text-white flex-column justify-content-center align-items-center p-5">
+    <div class="text-center">
+      <h3 class="fw-bold">Start Automating<br />Your Documents</h3>
+      <img src="assets/images/signup-illustration.png" alt="illustration" class="img-fluid mt-4" style="max-height: 300px;" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+.signup-page {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.signup-form-section {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.right-banner {
+  background: linear-gradient(to right, #007bff, #0056b3);
+}

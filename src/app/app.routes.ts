@@ -1,8 +1,18 @@
 import { Routes } from '@angular/router';
-import { Home } from './pages/home/home';
+
 import { Login } from './pages/login/login';
+import { SignUp } from './pages/signup/signup';
+import { HomeComponent } from './pages/home/home';
+import { Settings } from './pages/settings/settings';
+import { EditProfile } from './pages/settings/edit-profile/edit-profile';
+import { ApiSettings } from './pages/settings/api-settings/api-settings';
+
 
 export const routes: Routes = [
+     {
+        path: '',          
+        component: Login,  
+     },
     {
         path:'login',
         component: Login
@@ -10,7 +20,21 @@ export const routes: Routes = [
     
     {
         path:'home',
-        component: Home
-    }
+        component: HomeComponent
+    },
+    { 
+        path: 'signup',
+        component: SignUp 
+    },
+    {
+        path: 'settings',
+        component: Settings,
+        children: [
+      { path: '', redirectTo: 'edit-profile', pathMatch: 'full' },
+      { path: 'edit-profile', component: EditProfile },
+      { path: 'notification', component: Notification },
+      { path: 'api', component: ApiSettings }
+    ]
+  }
     
 ];

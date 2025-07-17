@@ -1,0 +1,21 @@
+<h3 class="fw-bold mb-4">API settings</h3>
+<form>
+  <div class="mb-3">
+    <label>AI Model</label>
+    <select class="form-select" [(ngModel)]="settings.aiModel" name="aiModel">
+      <option disabled>Select</option>
+      <option>ChatGPT 4o</option>
+      <option>GitHub Copilot</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>API KEY</label>
+    <input type="text" class="form-control" [(ngModel)]="settings.apiKey" name="apiKey" />
+  </div>
+
+  <div class="d-flex gap-2">
+    <button class="btn btn-outline-danger" type="button">Cancel</button>
+    <button class="btn btn-primary" type="submit">Save</button>
+  </div>
+</form>
