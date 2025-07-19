@@ -27,15 +27,16 @@ export const routes: Routes = [
         path: 'signup',
         component: SignUp 
     },
-    {
-        path: 'settings',
-        component: Settings,
-        children: [
+   {
+  path: 'settings',
+  component: Settings,
+    children: [
       { path: '', redirectTo: 'edit-profile', pathMatch: 'full' },
       { path: 'edit-profile', component: EditProfile },
       { path: 'mobile', component: MobileToken },
-      { path: 'api', component: ApiSettings }
+      { path: 'api', component: ApiSettings }// <-- make sure HelpComponent is imported
     ]
   }
+
     
 ];
