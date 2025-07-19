@@ -6,6 +6,7 @@ import { HomeComponent } from './pages/home/home';
 import { Settings } from './pages/settings/settings';
 import { EditProfile } from './pages/settings/edit-profile/edit-profile';
 import { ApiSettings } from './pages/settings/api-settings/api-settings';
+import { MobileToken } from './pages/settings/mobile-token/mobile-token';
 
 
 export const routes: Routes = [
@@ -32,7 +33,7 @@ export const routes: Routes = [
         children: [
       { path: '', redirectTo: 'edit-profile', pathMatch: 'full' },
       { path: 'edit-profile', component: EditProfile },
-      { path: 'notification', component: Notification },
+      { path: 'mobile', component: MobileToken },
       { path: 'api', component: ApiSettings }
     ]
   }

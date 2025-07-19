@@ -1,0 +1,55 @@
+<h3 class="fw-bold mb-4">Mobile Token Settings</h3>
+<form #apiSettingsForm="ngForm">
+  <div class="mb-3">
+    <label class="form-label">Scan QR Code</label><br />
+    <img *ngIf="qrCode" [src]="qrCode" alt="QR Code" style="width: 200px; height: 200px; border: 1px solid #ccc;" />
+  </div>
+
+  <div class="mb-3">
+    <div>
+      <span class="badge" [ngClass]="settings.used ? 'bg-success' : 'bg-warning'">
+        {{ settings.used ? 'Connected' : 'Not Connected' }}
+      </span>
+    </div>
+    <div class="mb-3">
+
+</div>
+  <button type="button" class="btn btn-outline-danger" (click)="refreshToken()">
+    Refresh Token
+  </button>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Token Key</label>
+    <div class="input-group">
+      <input
+        class="form-control"
+        name="apiKey"
+        [(ngModel)]="settings.token"
+        placeholder="Enter your API key"
+        required
+      />
+    </div>
+    <div class="form-text">Keep your token secure</div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Expiry Date</label>
+    <input
+      type="date"
+      class="form-control"
+      [(ngModel)]="settings.expiresAt"
+      name="expiryDate"
+      [min]="minDate | date:'yyyy-MM-dd'"
+    />
+    <div class="form-text">Leave empty for no expiration</div>
+  </div>
+
+  <div class="d-flex gap-2 mt-4">
+    <button class="btn btn-outline-danger" type="button">Cancel</button>
+    <button class="btn btn-primary" type="submit" [disabled]="!apiSettingsForm.valid">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      Save Settings
+    </button>
+  </div>
+</form>
