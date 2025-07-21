@@ -46,3 +46,59 @@
   font-weight: bold;
   color: #4c4cff;
 }
+.right-banner {
+  background: linear-gradient(135deg, #5e50fa, #a78bfa);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 1.5rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  color: #fff;
+  overflow: visible;
+  position: relative;
+}
+
+.headline-text {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  line-height: 1.4;
+}
+
+.illustration-pop {
+  position: relative;
+  left: 50px; /* push image to the right */
+  z-index: 1;
+  border-radius: 1rem;
+}
+
+/* Round Icon */
+.floating-icon {
+  width: 60px;
+  height: 60px;
+  top: 60%;
+  left: 15%;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.icon-inner {
+  font-size: 1.5rem;
+  color: #a78bfa;
+  font-weight: bold;
+}
+

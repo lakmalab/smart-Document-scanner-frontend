@@ -7,7 +7,7 @@ import { Settings } from './pages/settings/settings';
 import { EditProfile } from './pages/settings/edit-profile/edit-profile';
 import { ApiSettings } from './pages/settings/api-settings/api-settings';
 import { MobileToken } from './pages/settings/mobile-token/mobile-token';
-
+import { Document } from './pages/document/document';
 
 export const routes: Routes = [
      {
@@ -26,6 +26,10 @@ export const routes: Routes = [
     { 
         path: 'signup',
         component: SignUp 
+    },
+    { 
+        path: 'document',
+        component: Document
     },
    {
   path: 'settings',

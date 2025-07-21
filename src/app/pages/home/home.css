@@ -1,4 +1,5 @@
 .hero-section img {
   max-height: 320px;
   object-fit: contain;
+  background-color: rgb(255, 255, 255);
 }

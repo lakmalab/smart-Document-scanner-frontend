@@ -77,6 +77,10 @@ fetchTemplates(userId: number): void {
     const colorIndex = templateId % colors.length;
     return `https://placehold.co/600x400/${colors[colorIndex]}/ffffff?text=Template+${templateId}`;
   }
+navigateToDocument(templateId: number): void {
+  this.router.navigate(['/document', { id: templateId, templateId: templateId }]);
+  console.log('Navigating to document with template ID:', templateId);
+}
   
 }
 

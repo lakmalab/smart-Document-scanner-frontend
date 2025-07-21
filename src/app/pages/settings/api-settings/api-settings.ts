@@ -2,7 +2,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 interface User {
   userId: number;  
   name: string,
@@ -15,7 +15,7 @@ interface ApiKeySettings {
 }
 @Component({
   selector: 'app-api-settings',
-  imports: [FormsModule, HttpClientModule,DatePipe],
+  imports: [FormsModule, HttpClientModule,DatePipe,NgIf],
   templateUrl: './api-settings.html',
   styleUrl: './api-settings.css'
 })

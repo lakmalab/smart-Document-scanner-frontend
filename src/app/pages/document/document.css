@@ -1,0 +1,24 @@
+form input {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  box-shadow: none;
+}
+form input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #6f42c1;
+}
+.bg-warning {
+  background-color: #f7d9a2 !important;
+}
+.bg-secondary {
+  background-color: #b8988c !important;
+}
+.bg-light {
+  background-color: #d5c7f9 !important;
+}
+.bi {
+  cursor: pointer;
+  font-size: 1.2rem;
+}
