@@ -22,6 +22,7 @@ interface ExtractedField {
   fieldName: string;
   value: string;
   confidenceScore: number;
+  status: string;
 }
 interface User {
   userId: number;  
@@ -80,12 +81,13 @@ export class Document implements OnInit {
     next: (template) => {
       console.log('Template Response:', template);
       if (template?.fields?.length) {
-        this.fields = template.fields.map(field => ({
-          fieldId: field.fieldId,
-          fieldName: field.fieldName,
-          value: '', // initialize value for input binding
-          confidenceScore: 1.0 // default value
-        }));
+       this.fields = template.fields.map(field => ({
+        fieldId: field.fieldId,
+        fieldName: field.fieldName,
+        value: '',
+        confidenceScore: 1.0,
+        status: 'Pending'
+      }));
         console.log('Initialized Fields:', this.fields);
       } else {
         console.warn(`No fields found in template ID: ${selectedTemplateId}`);
@@ -134,7 +136,8 @@ handleEdit(index: number) {
     fieldId: field.fieldId,
     fieldName: field.fieldName,
     value: field.value,
-    confidenceScore: field.confidenceScore
+    confidenceScore: field.confidenceScore,
+    status: field.status
   }));
 
   console.log('Editing document ID:', this.editingDocumentId);
@@ -158,8 +161,20 @@ filteredDocs() {
 }
 
 
-handleDelete(_t54: number) {
-throw new Error('Method not implemented.');
+handleDelete(index: number) {
+  const doc = this.cardList[index];
+  console.log('Deleting document:', doc);
+
+  this.http.delete(`http://localhost:8080/api/documents/${doc.documentId}`)
+    .subscribe({
+      next: () => {
+        console.log('Document deleted successfully');
+        this.cardList.splice(index, 1); // Remove from local list
+      },
+      error: err => {
+        console.error('Failed to delete document:', err);
+      }
+    });
 }
 filterehandleDeletedDocs(_t54: number) {
 throw new Error('Method not implemented.');
