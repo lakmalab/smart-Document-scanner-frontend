@@ -8,7 +8,7 @@ import { EditProfile } from './pages/settings/edit-profile/edit-profile';
 import { ApiSettings } from './pages/settings/api-settings/api-settings';
 import { MobileToken } from './pages/settings/mobile-token/mobile-token';
 import { Document } from './pages/document/document';
-import { LoginComponent } from './pages/auth/login/login';
+import { LoginComponent } from './pages/login/login';
 
 export const routes: Routes = [
      {

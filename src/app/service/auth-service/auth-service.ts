@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoginRequest, LoginResponse } from './auth.model';
+import { LoginRequest, LoginResponse, RegisterRequest } from '../../model/auth.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,4 +31,9 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
   }
+
+  register(request: RegisterRequest) {
+    return this.http.post(`${this.apiUrl}/register`, request);
+  }
+
 }

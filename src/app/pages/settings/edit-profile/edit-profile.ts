@@ -1,17 +1,9 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-interface User {
-  userId: number;
-  name: string;
-  email: string;
-  address?: string;
-  contact?: string;
-  city?: string;
-  province?: string;
-  password?: string;
-}
+import { UserService } from '../../../service/user-service/user-service';
+import { User } from '../../../model/template.model';
 
 @Component({
   selector: 'app-edit-profile',
@@ -19,7 +11,10 @@ interface User {
   templateUrl: './edit-profile.html',
   styleUrl: './edit-profile.css'
 })
-export class EditProfile {
+export class EditProfileComponent implements OnInit {
+  private router = inject(Router);
+  private userService = inject(UserService);
+
   userData: User | null = null;
 
   profile = {
@@ -33,15 +28,15 @@ export class EditProfile {
     password: ''
   };
 
-  constructor(private router: Router, private http: HttpClient) {
+  ngOnInit(): void {
     this.userData = this.router.getCurrentNavigation()?.extras.state?.['user']
                  || JSON.parse(localStorage.getItem('user') || 'null');
 
     if (this.userData) {
-      const nameParts = this.userData.name?.split(' ') || [];
+      const nameParts = this.userData.name.split(' ');
       this.profile.firstName = nameParts[0] || '';
       this.profile.lastName = nameParts.slice(1).join(' ') || '';
-      this.profile.email = this.userData.email || '';
+      this.profile.email = this.userData.email;
       this.profile.address = this.userData.address || '';
       this.profile.contact = this.userData.contact || '';
       this.profile.city = this.userData.city || '';
@@ -50,36 +45,32 @@ export class EditProfile {
     }
   }
 
-  onSave() {
-  if (!this.userData?.userId) {
-    console.error("User ID is missing.");
-    return;
-  }
+  onSave(): void {
+    if (!this.userData?.userId) {
+      console.error('User ID missing');
+      return;
+    }
 
-  const updatedUser = {
-    name: this.profile.firstName + ' ' + this.profile.lastName,
-    email: this.profile.email,
-    password: this.profile.password
-  };
+    const updatedUser: Partial<User> = {
+      name: `${this.profile.firstName} ${this.profile.lastName}`,
+      email: this.profile.email,
+      password: this.profile.password
+      // Add additional fields here if backend accepts them
+    };
 
-  this.http.put(`http://localhost:8080/auth/users/${this.userData.userId}`, updatedUser)
-    .subscribe({
-      next: (response: any) => {
-        console.log('User updated:', response);
-        // Optional: Save updated info to localStorage
-        localStorage.setItem('user', JSON.stringify(response));
+    this.userService.updateUser(this.userData.userId, updatedUser).subscribe({
+      next: (updated) => {
+        localStorage.setItem('user', JSON.stringify(updated));
         alert('Profile updated successfully!');
       },
-      error: (error) => {
-        console.error('Update failed:', error);
-        alert('Failed to update profile.');
+      error: (err) => {
+        console.error('Failed to update profile:', err);
+        alert('Profile update failed.');
       }
     });
-}
+  }
 
-
-
-  onCancel() {
-     this.router.navigate(['/home']);
+  onCancel(): void {
+    this.router.navigate(['/home']);
   }
 }

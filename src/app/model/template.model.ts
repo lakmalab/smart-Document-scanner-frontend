@@ -1,0 +1,47 @@
+export interface ExtractedField {
+  fieldId: number;
+  fieldName: string;
+  value: string;
+  confidenceScore: number;
+  status: string;
+}
+
+export interface Document2 {
+  documentId: number;
+  status: string;
+  uploadDate: string;
+  uploadedByUserId: number;
+  templateId: number;
+  templateName: string;
+  extractedFields: ExtractedField[];
+}
+
+export interface Template {
+  templateId: number;
+  template_name: string;
+  field_count: number;
+  image_url: string;
+  fields: {
+    fieldId: number;
+    fieldName: string;
+    fieldType: string;
+    required: boolean;
+  }[];
+}
+
+export interface MobileTokenSettings {
+  token: string;
+  used: boolean;
+  expiresAt: string | null;
+}
+
+export interface User {
+  userId: number;
+  name: string;
+  email: string;
+  address?: string;
+  contact?: string;
+  city?: string;
+  province?: string;
+  password?: string;
+}

@@ -1,19 +1,13 @@
 import { NgClass, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-interface MobileTokenSettings {
-  token: string;
-  used: boolean;
-  expiresAt: string | null;
-}
-interface User {
-  userId: number;
-  name: string;
-  email: string;
-}
+import { User } from '../../../model/template.model';
+import { MobileTokenSettings } from '../../../model/mobile-token-settings.model';
+import { MobileTokenService } from '../../../service/mobile-token-service/mobile-token-service';
+
 @Component({
   selector: 'app-mobile-token',
   imports: [NgIf,FormsModule,HttpClientModule,DatePipe,NgClass],
@@ -21,66 +15,54 @@ interface User {
   styleUrl: './mobile-token.css'
 })
 
-export class MobileToken {
-userData: User | null = null;
-    constructor(private router: Router, private http: HttpClient) {
-  
-    this.userData = this.router.getCurrentNavigation()?.extras.state?.['user'] 
-                  || JSON.parse(localStorage.getItem('user') || 'null');
-  }
-    settings = {
-    used: false,
-    token: '',
-    expiresAt: null as string | null
-  };
-   qrCode: string | null = null;
-  minDate = new Date();
+export class MobileTokenComponent implements OnInit {
+  private router = inject(Router);
+  private tokenService = inject(MobileTokenService);
+
+  userData: User | null = null;
+  settings: MobileTokenSettings = { used: false, token: '', expiresAt: null };
+  qrCode: string | null = null;
   loading = false;
-  
-ngOnInit(): void {
+  minDate = new Date();
+
+  ngOnInit(): void {
+    this.userData = this.router.getCurrentNavigation()?.extras.state?.['user']
+      || JSON.parse(localStorage.getItem('user') || 'null');
+
     if (!this.userData) return;
 
-    const id = this.userData.userId;
+    const userId = this.userData.userId;
+    this.loadToken(userId);
+    this.loadQRCode(userId);
 
-    this.loadToken(id);
-    this.loadQRCode(id);
-
-    // Poll every 5 seconds to auto-refresh 'used' status
-    setInterval(() => {
-      this.loadToken(id);
-    }, 5000);
+    // Poll every 5 seconds
+    setInterval(() => this.loadToken(userId), 5000);
   }
 
-  loadToken(id: number): void {
-    this.http.get<MobileTokenSettings>(`http://localhost:8080/mobile/users/${id}`)
-      .subscribe({
-        next: (data) => this.settings = data,
-        error: (err) => console.error('Failed to load token:', err)
-      });
-  }
-
-  loadQRCode(id: number): void {
-    this.http.get(`http://localhost:8080/mobile/users/${id}/qr`, {
-      responseType: 'text',
-    }).subscribe({
-      next: (qrBase64) => {
-        this.qrCode = qrBase64;
-      },
-      error: (err) => {
-        console.error('Failed to load QR code:', err);
-      }
+  loadToken(userId: number): void {
+    this.tokenService.getToken(userId).subscribe({
+      next: (data) => this.settings = data,
+      error: (err) => console.error('Failed to load token:', err)
     });
   }
-  refreshToken() {
-  if (!this.userData) return;
-  this.loading = true;
-  const id = this.userData.userId;
 
-  this.http.post(`http://localhost:8080/mobile/users/${id}/refresh`, null)
-    .subscribe({
-      next: (updated) => {
-        this.loadToken(id);    // refresh current token state
-        this.loadQRCode(id);   // refresh QR image
+  loadQRCode(userId: number): void {
+    this.tokenService.getQrCode(userId).subscribe({
+      next: (qrBase64) => this.qrCode = qrBase64,
+      error: (err) => console.error('Failed to load QR code:', err)
+    });
+  }
+
+  refreshToken(): void {
+    if (!this.userData) return;
+
+    this.loading = true;
+    const id = this.userData.userId;
+
+    this.tokenService.refreshToken(id).subscribe({
+      next: () => {
+        this.loadToken(id);
+        this.loadQRCode(id);
         this.loading = false;
       },
       error: (err) => {
@@ -88,7 +70,5 @@ ngOnInit(): void {
         this.loading = false;
       }
     });
-}
-
-
+  }
 }

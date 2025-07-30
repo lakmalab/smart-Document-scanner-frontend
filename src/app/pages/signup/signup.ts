@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { AuthService } from '../../service/auth-service/auth-service';
+import { RegisterRequest } from '../../model/auth.model';
 
 @Component({
   selector: 'app-signup',
@@ -10,26 +12,27 @@ import { NgIf } from '@angular/common';
   templateUrl: './signup.html',
   styleUrl: './signup.css'
 })
-export class SignUp {
-  name: string = '';
-  email: string = '';
-  password: string = '';
-  errorMessage: string = '';
-  successMessage: string = '';
+export class SignupComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  constructor(private http: HttpClient, private router: Router) {}
+  name = '';
+  email = '';
+  password = '';
+  errorMessage = '';
+  successMessage = '';
 
-  onRegister() {
-    const body = {
+  onRegister(): void {
+    const request: RegisterRequest = {
       name: this.name,
       email: this.email,
       password: this.password
     };
 
-    this.http.post<any>('http://localhost:8080/auth/register', body).subscribe({
+    this.authService.register(request).subscribe({
       next: () => {
         this.successMessage = 'Registration successful!';
-        this.router.navigate(['/login']); // redirect to login
+        this.router.navigate(['/login']);
       },
       error: () => {
         this.errorMessage = 'Registration failed. Try again.';

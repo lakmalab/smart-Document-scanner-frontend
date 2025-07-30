@@ -1,69 +1,63 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DatePipe, NgIf } from '@angular/common';
-interface User {
-  userId: number;  
-  name: string,
-  email: string;
-}
-interface ApiKeySettings {
-  apiKey: string;
-  model: string;
-  expiresAt: string | null;
-}
+import { ApiKeyService } from '../../../service/apikey-service/apikey-service';
+import { User } from '../../../model/template.model';
+import { ApiKeySettings } from '../../../model/settings.model';
+
 @Component({
   selector: 'app-api-settings',
   imports: [FormsModule, HttpClientModule,DatePipe,NgIf],
   templateUrl: './api-settings.html',
   styleUrl: './api-settings.css'
 })
-export class ApiSettings {
-   userData: User | null = null;
-    constructor(private router: Router, private http: HttpClient) {
-    // Get user data from navigation state or localStorage
-    this.userData = this.router.getCurrentNavigation()?.extras.state?.['user'] 
-                  || JSON.parse(localStorage.getItem('user') || 'null');
-  }
-  
-   
+export class ApiSettingsComponent implements OnInit {
+  private apiService = inject(ApiKeyService);
+  private router = inject(Router);
+
+  userData: User | null = null;
+  showApiKey = false;
+  loading = false;
+  minDate = new Date();
+
   settings = {
     aiModel: '',
     apiKey: '',
     expiryDate: null as string | null
   };
-  minDate = new Date();
-  loading = false;
-  ngOnInit() {
+
+  ngOnInit(): void {
+    this.userData = this.router.getCurrentNavigation()?.extras.state?.['user']
+                 || JSON.parse(localStorage.getItem('user') || 'null');
     this.loadApiKeySettings();
   }
-showApiKey: boolean = false;
 
-  loadApiKeySettings() {
-    if (this.userData?.userId) {
-      this.http.get<ApiKeySettings>(`http://localhost:8080/api/users/${this.userData.userId}`)
-        .subscribe({
-          next: (data) => {
-            this.settings = {
-              aiModel: data.model,
-              apiKey: data.apiKey,
-              expiryDate: data.expiresAt ? new Date(data.expiresAt).toISOString().split('T')[0] : null
-            };
-          },
-          error: (err) => {
-            console.error('Error loading API settings:', err);
-          }
-        });
-    }
-  }
-
-  saveSettings() {
+  loadApiKeySettings(): void {
     if (!this.userData?.userId) return;
 
+    this.apiService.getApiKeySettings(this.userData.userId).subscribe({
+      next: (data) => {
+        this.settings = {
+          aiModel: data.model,
+          apiKey: data.apiKey,
+          expiryDate: data.expiresAt 
+            ? new Date(data.expiresAt).toISOString().split('T')[0] 
+            : null
+        };
+      },
+      error: (err) => {
+        console.error('Error loading API settings:', err);
+      }
+    });
+  }
+
+  saveSettings(): void {
+    if (!this.userData?.userId) return;
     this.loading = true;
-    
-    const apiKeyData: ApiKeySettings = {
+
+    const payload: ApiKeySettings = {
       apiKey: this.settings.apiKey,
       model: this.settings.aiModel,
       expiresAt: this.settings.expiryDate 
@@ -71,10 +65,7 @@ showApiKey: boolean = false;
         : null
     };
 
-    this.http.post(
-      `http://localhost:8080/auth/add-apikey/${this.userData.userId}`,
-      apiKeyData
-    ).subscribe({
+    this.apiService.saveApiKey(this.userData.userId, payload).subscribe({
       next: () => {
         this.loading = false;
         alert('API settings saved successfully!');
@@ -88,14 +79,13 @@ showApiKey: boolean = false;
     });
   }
 
-  resetForm() {
-    const confirmReset = confirm('Are you sure you want to discard changes?');
-    if (confirmReset) {
-      this.loadApiKeySettings(); // Reload original settings
+  resetForm(): void {
+    if (confirm('Are you sure you want to discard changes?')) {
+      this.loadApiKeySettings();
     }
   }
 
-  onCancel() {
+  onCancel(): void {
     this.router.navigate(['/home']);
   }
 }
