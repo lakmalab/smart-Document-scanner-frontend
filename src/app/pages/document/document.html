@@ -15,9 +15,8 @@
           <button class="btn btn-primary ms-auto">NEXT</button>
         </div>
 
-        <h5 class="fw-bold mb-3">Vehicle Registration Book</h5>
-
-        <form *ngIf="fields.length > 0" (ngSubmit)="submitForm()" class="flex-grow-1 d-flex flex-column">
+        <h5 class="fw-bold mb-3">{{ templateName }}</h5>
+        <form *ngIf="fields.length > 0" (ngSubmit)="onSubmit()" class="flex-grow-1 d-flex flex-column">
           <div class="mb-2" *ngFor="let field of fields">
             <label class="form-label fw-semibold">{{ field.fieldName }}</label>
             <input
@@ -28,7 +27,11 @@
               [placeholder]="'Enter ' + field.fieldName" />
           </div>
 
-          <button class="btn btn-primary mt-auto w-100">Submit</button>
+          <button class="btn btn-primary mt-auto w-100" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            <span *ngIf="!loading && !submitted">Submit</span>
+            <span *ngIf="submitted" >✓ Done </span> <!-- Checkmark -->
+          </button>
         </form>
 
         <div *ngIf="fields.length === 0" class="text-muted text-center py-4">
@@ -42,32 +45,39 @@
   <div class="p-4 rounded shadow bg-white h-100 d-flex flex-column">
     
     <!-- Search Input -->
-    <input
-      type="text"
-      [(ngModel)]="searchQuery"
-      class="form-control rounded-pill mb-4"
-      placeholder="Search documents..."
-    />
+    <div class="d-flex mb-4">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        class="form-control rounded-pill me-2"
+        placeholder="Search documents..."
+      />
+      
+      <!-- Status Filter Dropdown -->
+      <select [(ngModel)]="selectedStatus" class="form-select rounded-pill">
+        <option value="">All Statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="Reviewed">Reviewed</option>
+      </select>
+    </div>
 
     <!-- Document List -->
-    <div class="overflow-auto flex-grow-1" style="max-height: 75vh;">
+    <div class="overflow-auto flex-grow-1" style="max-height: 100vh;">
       
       <!-- Document Cards -->
-     <app-document-card
-  *ngFor="let doc of filteredDocs(); let i = index"
-  [document]="doc"
-  (onEdit)="handleEdit(i)"
-  (onDelete)="handleDelete(i)"
-  (onApprove)="handleApprove(i)">
-</app-document-card>
-
+      <app-document-card
+        *ngFor="let doc of filteredDocs(); let i = index"
+        [document]="doc"
+        (onEdit)="handleEdit(i)"
+        (onDelete)="handleDelete(i)"
+        (onApprove)="handleApprove(i)">
+      </app-document-card>
 
       <!-- No Documents Found Message -->
       <div *ngIf="filteredDocs().length === 0" class="text-muted text-center mt-4">
         No documents found.
       </div>
     </div>
-
   </div>
 </div>
 </div>

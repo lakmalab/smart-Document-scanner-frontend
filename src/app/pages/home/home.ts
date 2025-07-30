@@ -31,6 +31,12 @@ interface Template {
 })
 
 export class HomeComponent implements OnInit {
+scrollToTemplates(): void {
+    const templateSection = document.getElementById('template-cards');
+    if (templateSection) {
+      templateSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
   templates: Template[] = [];
   userData: User | null = null;
 

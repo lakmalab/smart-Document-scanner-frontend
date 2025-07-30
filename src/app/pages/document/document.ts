@@ -55,14 +55,16 @@ interface DocumentCardItem {
 })
 export class Document implements OnInit {
   editingDocumentId: number | null = null;
-
+  selectedStatus: string = ''; 
   fields: ExtractedField[] = [];
   cardList: DocumentCardItem[] = [];
-  isMobileConnected: any;
-  scanMethod: any;
+  isMobileConnected: boolean = false;
+  scanMethod: string = '';
   searchQuery: any;
-
   userData: User | null = null;
+  loading: boolean = false;
+  submitted: boolean = false;
+
       constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient) {
     
       this.userData = this.router.getCurrentNavigation()?.extras.state?.['user'] 
@@ -71,15 +73,17 @@ export class Document implements OnInit {
     
 
   ngOnInit(): void {
-     const selectedTemplateId = Number(this.route.snapshot.paramMap.get('templateId'));
+    this.loadFormName() 
+    this.loadForm()
+    this.loadcardlist();
+}
+loadForm() {
+  const selectedTemplateId = Number(this.route.snapshot.paramMap.get('templateId'));
   console.log('Captured Template ID:', selectedTemplateId); 
-    if (!this.userData) return;
-
-   
+  if (!this.userData) return;
  this.http.get<Template>(`http://localhost:8080/api/templates/${selectedTemplateId}`)
   .subscribe({
     next: (template) => {
-      console.log('Template Response:', template);
       if (template?.fields?.length) {
        this.fields = template.fields.map(field => ({
         fieldId: field.fieldId,
@@ -97,10 +101,31 @@ export class Document implements OnInit {
       console.error('Failed to load template:', err);
     }
   });
+}
+templateName: string = '';
 
- const id = this.userData.userId;
-
-   this.http.get<Document2[]>(`http://localhost:8080/api/documents/by-user/${id}`)
+loadFormName() {
+  const selectedTemplateId = Number(this.route.snapshot.paramMap.get('templateId'));
+  if (!this.userData) return;
+  this.http.get<Template>(`http://localhost:8080/api/templates/${selectedTemplateId}`)
+    .subscribe({
+      next: (template) => {
+        console.log('template is:',template);
+        this.templateName = template.template_name || 'Document Form';
+        console.log('template name now:',this.templateName);
+      },
+      error: (err) => {
+        console.error('Failed to load template name:', err);
+        this.templateName = '';
+      }
+    });
+}
+loadcardlist() {
+  this.isMobileConnected = true;
+   const selectedTemplateId = Number(this.route.snapshot.paramMap.get('templateId'));
+    if (!this.userData) return;
+    const id = this.userData.userId;
+ this.http.get<Document2[]>(`http://localhost:8080/api/documents/by-user/${id}`)
   .subscribe({
     next: (docs) => {
       const matchingDocs = docs.filter(doc =>
@@ -121,16 +146,15 @@ export class Document implements OnInit {
       console.error('Failed to load documents:', err);
     }
   });
-
-
 }
+
 handleApprove(_t54: number) {
 throw new Error('Method not implemented.');
 }
 handleEdit(index: number) {
   const doc = this.cardList[index];
   this.editingDocumentId = doc.documentId;
-
+  this.submitted = false;
   // Set this.fields with values from the selected document for editing
   this.fields = doc.fields.map(field => ({
     fieldId: field.fieldId,
@@ -148,17 +172,26 @@ handleEdit(index: number) {
 // { documentId, templateName, uploadDate, status, fields: ExtractedField[] }
 
 filteredDocs() {
-  if (!this.searchQuery) return this.cardList;
+    let filtered = this.cardList;
 
-  const query = this.searchQuery.toLowerCase();
-  return this.cardList.filter(doc =>
-    doc.templateName?.toLowerCase().includes(query) ||
-    doc.fields?.some(f =>
-      f.fieldName.toLowerCase().includes(query) ||
-      f.value?.toLowerCase().includes(query)
-    )
-  );
-}
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(doc =>
+        doc.templateName?.toLowerCase().includes(query) ||
+        doc.fields?.some(f =>
+          f.fieldName.toLowerCase().includes(query) ||
+          f.value?.toLowerCase().includes(query)
+        )
+      );
+    }
+
+    // Filter by selected status
+    if (this.selectedStatus) {
+      filtered = filtered.filter(doc => doc.status.toLowerCase() === this.selectedStatus.toLowerCase());
+    }
+
+    return filtered;
+  }
 
 
 handleDelete(index: number) {
@@ -169,18 +202,20 @@ handleDelete(index: number) {
     .subscribe({
       next: () => {
         console.log('Document deleted successfully');
-        this.cardList.splice(index, 1); // Remove from local list
+        this.cardList.splice(index, 1); 
+       
       },
       error: err => {
         console.error('Failed to delete document:', err);
       }
     });
+    this.loadcardlist();
 }
 filterehandleDeletedDocs(_t54: number) {
 throw new Error('Method not implemented.');
 }
 
-submitForm() {
+onSubmit() {
   const payload = {
     documentId: this.editingDocumentId,
     extractedFields: this.fields.map(field => ({
@@ -191,18 +226,29 @@ submitForm() {
 
   console.log('Submit Payload:', payload);
 
-  if (this.editingDocumentId) {
-    this.http.put(`http://localhost:8080/api/documents/${this.editingDocumentId}`, payload)
-      .subscribe({
-        next: res => {
-          console.log('Document updated:', res);
-          this.editingDocumentId = null;
-        },
-        error: err => {
-          console.error('Failed to update document:', err);
-        }
-      });
-  } else {
-    // POST for new document, if applicable
-  }
-}}
+  this.loading = true; // Start loading
+  this.submitted = false; // Reset submitted state
+
+  const request = this.editingDocumentId 
+    ? this.http.put(`http://localhost:8080/api/documents/${this.editingDocumentId}`, payload)
+    : this.http.post('http://localhost:8080/api/documents', payload);
+
+  request.subscribe({
+    next: res => {
+      console.log(this.editingDocumentId ? 'Document updated:' : 'Document created:', res);
+      this.editingDocumentId = null;
+      this.loading = false; // Stop loading
+      this.submitted = true; // Show checkmark
+      this.loadcardlist();
+      // Optionally reset the form fields here
+      this.fields.forEach(field => field.value = '');
+
+    },
+    error: err => {
+      console.error('Failed to submit document:', err);
+      this.loading = false; // Stop loading
+      // Optionally handle error feedback here
+    }
+  });
+}
+}

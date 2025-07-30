@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { Login } from './pages/login/login';
+
 import { SignUp } from './pages/signup/signup';
 import { HomeComponent } from './pages/home/home';
 import { Settings } from './pages/settings/settings';
@@ -8,15 +8,16 @@ import { EditProfile } from './pages/settings/edit-profile/edit-profile';
 import { ApiSettings } from './pages/settings/api-settings/api-settings';
 import { MobileToken } from './pages/settings/mobile-token/mobile-token';
 import { Document } from './pages/document/document';
+import { LoginComponent } from './pages/auth/login/login';
 
 export const routes: Routes = [
      {
         path: '',          
-        component: Login,  
+        component: LoginComponent,  
      },
     {
         path:'login',
-        component: Login
+        component: LoginComponent
     },
     
     {
