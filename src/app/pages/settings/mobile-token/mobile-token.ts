@@ -47,11 +47,20 @@ export class MobileTokenComponent implements OnInit {
   }
 
   loadQRCode(userId: number): void {
-    this.tokenService.getQrCode(userId).subscribe({
-      next: (qrBase64) => this.qrCode = qrBase64,
-      error: (err) => console.error('Failed to load QR code:', err)
+  this.tokenService.getQRCode(userId).subscribe({
+    next: (qrBase64: string | null) => {
+      if (!qrBase64) {
+        this.qrCode = null;
+      } else if (qrBase64.startsWith('data:image')) {
+        this.qrCode = qrBase64; 
+      } else {
+        this.qrCode = `data:image/png;base64,${qrBase64}`;
+      }
+    },
+    error: (err: any) => console.error('Failed to load QR code:', err)
     });
   }
+
 
   refreshToken(): void {
     if (!this.userData) return;

@@ -8,7 +8,7 @@ import { Template, User } from '../../model/template.model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
-  styleUrls: ['./home.scss'],
+  styleUrls: ['./home.css'],
   standalone: true,
   imports: [TemplateCardComponent, NgFor]
 })
@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToDocument(templateId: number): void {
-    this.router.navigate(['/document', { id: templateId, templateId }]);
+  this.router.navigate(['/document', templateId]);
+
   }
 }

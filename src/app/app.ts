@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './pages/header/header';
 import { Footer } from './pages/footer/footer';
-
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer],
+  imports: [RouterOutlet, Header, Footer,NgxSkeletonLoaderModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

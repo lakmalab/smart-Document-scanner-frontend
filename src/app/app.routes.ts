@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
 
 
-import { SignUp } from './pages/signup/signup';
 import { HomeComponent } from './pages/home/home';
 import { Settings } from './pages/settings/settings';
-import { EditProfile } from './pages/settings/edit-profile/edit-profile';
-import { ApiSettings } from './pages/settings/api-settings/api-settings';
-import { MobileToken } from './pages/settings/mobile-token/mobile-token';
-import { Document } from './pages/document/document';
 import { LoginComponent } from './pages/login/login';
+import { SignupComponent } from './pages/signup/signup';
+import { EditProfileComponent } from './pages/settings/edit-profile/edit-profile';
+import { MobileTokenComponent } from './pages/settings/mobile-token/mobile-token';
+import { ApiSettingsComponent } from './pages/settings/api-settings/api-settings';
+import { DocumentComponent } from './pages/document/document';
 
 export const routes: Routes = [
      {
@@ -26,20 +26,20 @@ export const routes: Routes = [
     },
     { 
         path: 'signup',
-        component: SignUp 
+        component: SignupComponent 
     },
     { 
-        path: 'document',
-        component: Document
+        path: 'document/:templateId',
+        component: DocumentComponent
     },
    {
   path: 'settings',
   component: Settings,
     children: [
       { path: '', redirectTo: 'edit-profile', pathMatch: 'full' },
-      { path: 'edit-profile', component: EditProfile },
-      { path: 'mobile', component: MobileToken },
-      { path: 'api', component: ApiSettings }// <-- make sure HelpComponent is imported
+      { path: 'edit-profile', component: EditProfileComponent },
+      { path: 'mobile', component: MobileTokenComponent },
+      { path: 'api', component: ApiSettingsComponent }// <-- make sure HelpComponent is imported
     ]
   }
 

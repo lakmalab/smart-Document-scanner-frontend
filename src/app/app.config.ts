@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { AuthInterceptor } from './auth-interceptor';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 // adjust path if needed
 
 export const appConfig: ApplicationConfig = {

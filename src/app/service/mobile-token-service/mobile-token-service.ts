@@ -14,8 +14,13 @@ export class MobileTokenService {
   }
 
   getQRCode(userId: number): Observable<string> {
-    return this.api.get<string>(`mobile/users/${userId}/qr`, undefined, { responseType: 'text' as 'text' });
+    return this.api.get<string>(
+      `mobile/users/${userId}/qr`,
+      undefined,
+      { responseType: 'text' as 'text' }
+    );
   }
+
 
   refreshToken(userId: number): Observable<any> {
     return this.api.post(`mobile/users/${userId}/refresh`, null);

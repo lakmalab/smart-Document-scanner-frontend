@@ -15,6 +15,6 @@ export class TemplateCardComponent {
   @Output() useTemplate = new EventEmitter<number>();
 
   onUseTemplate(): void {
-    this.useTemplate.emit(this.template.template_id);
+    this.useTemplate.emit(this.template.templateId);
   }
 }

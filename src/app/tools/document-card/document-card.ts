@@ -1,9 +1,10 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output, output } from '@angular/core';
+import { NgxSkeletonLoaderComponent } from "ngx-skeleton-loader";
 
 @Component({
   selector: 'app-document-card',
-  imports: [NgFor, NgClass,NgIf],
+  imports: [NgFor, NgClass, NgIf, NgxSkeletonLoaderComponent],
   templateUrl: './document-card.html',
   styleUrl: './document-card.css'
 })
@@ -25,6 +26,7 @@ export class DocumentCard {
   @Output() onDelete = new EventEmitter<void>();
   @Output() onApprove = new EventEmitter<void>();
     isExpanded = false;
+@Input() loading: boolean = false;
       toggleExpand() {
     this.isExpanded = !this.isExpanded;
   }

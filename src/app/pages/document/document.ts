@@ -7,8 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DocumentService } from '../../service/document-service/document-service';
 import { Template, User } from '../../model/template.model';
 import { Document2, DocumentCardItem, ExtractedField } from '../../model/document.model';
-
-
+import { TemplateService } from '../../service/template-service/template-service';
 
 @Component({
   selector: 'app-document',
@@ -17,10 +16,13 @@ import { Document2, DocumentCardItem, ExtractedField } from '../../model/documen
   styleUrls: ['./document.css']
 })
 export class DocumentComponent implements OnInit {
+handleApprove(_t77: number) {
+throw new Error('Method not implemented.');
+}
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private docService = inject(DocumentService);
-
+  private tempService = inject(TemplateService);
   userData: User | null = null;
   fields: ExtractedField[] = [];
   cardList: DocumentCardItem[] = [];
@@ -32,6 +34,7 @@ export class DocumentComponent implements OnInit {
   submitted = false;
   templateName = '';
   isMobileConnected = false;
+  scanMethod: String = '';
 
   ngOnInit(): void {
     this.userData = this.router.getCurrentNavigation()?.extras.state?.['user']
@@ -45,7 +48,7 @@ export class DocumentComponent implements OnInit {
 
   private loadTemplateAndFields(): void {
     const templateId = Number(this.route.snapshot.paramMap.get('templateId'));
-    this.docService.getTemplate(templateId).subscribe({
+    this.tempService.getTemplate(templateId).subscribe({
       next: (template: Template) => {
         this.templateName = template.template_name || 'Document Form';
         this.fields = template.fields.map(field => ({
@@ -66,7 +69,7 @@ export class DocumentComponent implements OnInit {
     const templateId = Number(this.route.snapshot.paramMap.get('templateId'));
     this.isMobileConnected = true;
 
-    this.docService.getUserDocuments(id).subscribe({
+    this.docService.getDocumentsByUser(id).subscribe({
       next: (docs: Document2[]) => {
         this.cardList = docs
           .filter(doc => doc.templateId === templateId && doc.extractedFields.length)
@@ -110,8 +113,8 @@ export class DocumentComponent implements OnInit {
     this.submitted = false;
 
     const request = this.editingDocumentId
-      ? this.docService.updateDocument(this.editingDocumentId, payload)
-      : this.docService.createDocument(payload);
+      ? this.docService.updateDocument(this.editingDocumentId, payload.extractedFields)
+      : this.docService.createDocument(payload.extractedFields);
 
     request.subscribe({
       next: (res) => {

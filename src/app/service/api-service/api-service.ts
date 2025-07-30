@@ -9,8 +9,21 @@ export class ApiService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
 
-  get<T>(endpoint: string, params?: HttpParams, p0?: { responseType: "text"; }): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}/${endpoint}`, { params });
+  get<T>(endpoint: string, params?: HttpParams, options?: {
+  headers?: HttpHeaders,
+  observe?: 'body',
+  responseType?: 'json'
+  }): Observable<T>;
+  get<T>(endpoint: string, params: HttpParams | undefined, options: {
+    headers?: HttpHeaders,
+    observe?: 'body',
+    responseType: 'text'
+  }): Observable<string>;
+  get<T>(endpoint: string, params?: HttpParams, options: any = {}): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/${endpoint}`, {
+      params,
+      ...options
+    });
   }
 
   post<T>(endpoint: string, body: any, headers?: HttpHeaders): Observable<T> {
