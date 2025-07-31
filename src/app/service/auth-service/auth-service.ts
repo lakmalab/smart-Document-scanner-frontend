@@ -2,16 +2,15 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginRequest, LoginResponse, RegisterRequest } from '../../model/auth.model';
-
+import { ApiService } from '../api-service/api-service';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/auth';
+   private api = inject(ApiService);
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials);
+    return this.api.post<LoginResponse>(`auth/login`, credentials);
   }
 
   saveAuthData(token: string, user: any): void {
@@ -33,7 +32,7 @@ export class AuthService {
   }
 
   register(request: RegisterRequest) {
-    return this.http.post(`${this.apiUrl}/register`, request);
+    return this.api.post(`auth/register`, request);
   }
 
 }

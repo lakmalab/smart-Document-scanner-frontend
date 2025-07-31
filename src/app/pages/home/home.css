@@ -3,3 +3,11 @@
   object-fit: contain;
   background-color: rgb(255, 255, 255);
 }
+
+.btn-create{
+  background-color: #d58c2b;
+  color: white;
+  margin-left: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+}

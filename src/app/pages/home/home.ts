@@ -47,6 +47,9 @@ export class HomeComponent implements OnInit {
 
   navigateToDocument(templateId: number): void {
   this.router.navigate(['/document', templateId]);
+  }
+  navigateToTemplateBuilder(): void {
+  this.router.navigate(['/templatebuilder', this.userData?.userId]);
 
   }
 }

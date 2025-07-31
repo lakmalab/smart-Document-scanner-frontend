@@ -1,0 +1,51 @@
+ <div [ngSwitch]="config.type">
+      <!-- Text Input -->
+      <div *ngSwitchCase="'text'">
+        <label class="form-label">{{config.label}}</label>
+        <input type="text" class="form-control" [placeholder]="config.placeholder">
+      </div>
+      
+      <!-- Textarea -->
+      <div *ngSwitchCase="'textarea'">
+        <label class="form-label">{{config.label}}</label>
+        <textarea class="form-control" [placeholder]="config.placeholder" rows="3"></textarea>
+      </div>
+      
+      <!-- Date Picker -->
+      <div *ngSwitchCase="'date'">
+        <label class="form-label">{{config.label}}</label>
+        <input type="date" class="form-control">
+      </div>
+      
+      <!-- Select Dropdown -->
+      <div *ngSwitchCase="'select'">
+        <label class="form-label">{{config.label}}</label>
+        <select class="form-control">
+          <option selected>Select an option</option>
+          <option>Option 1</option>
+          <option>Option 2</option>
+        </select>
+      </div>
+      
+      <!-- Checkbox -->
+      <div *ngSwitchCase="'checkbox'" class="form-check">
+        <input class="form-check-input" type="checkbox">
+        <label class="form-check-label">{{config.label}}</label>
+      </div>
+      
+      <!-- Radio Button -->
+      <div *ngSwitchCase="'radio'" class="form-check">
+        <input class="form-check-input" type="radio" name="radioGroup">
+        <label class="form-check-label">{{config.label}}</label>
+      </div>
+      
+      <!-- Label -->
+      <div *ngSwitchCase="'label'">
+        <label class="form-label">{{config.label}}</label>
+      </div>
+      
+      <!-- Button -->
+      <div *ngSwitchCase="'button'">
+        <button class="btn btn-primary">{{config.label}}</button>
+      </div>
+    </div>

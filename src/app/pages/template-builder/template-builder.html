@@ -1,0 +1,130 @@
+<div class="form-builder-container">
+  <!-- Header Section -->
+  <header class="builder-header">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="mb-3">Form Builder</h1>
+          <div class="form-name-section mb-3">
+            <input type="text" class="form-control form-name-input" 
+                   placeholder="Enter form name" [(ngModel)]="formName">
+          </div>
+        </div>
+        <div class="col-md-4 text-end">
+          <div class="form-image-upload">
+            <label class="btn image-upload-btn">
+              <i class="bi bi-image me-2"></i>Upload Template Image
+              <input type="file" hidden (change)="handleImageUpload($event)">
+            </label>
+            <div class="image-preview mt-2" *ngIf="formImage">
+              <img [src]="formImage" alt="Form template" class="img-thumbnail">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="builder-main-content container-fluid">
+    <div class="row">
+      <!-- Components Panel -->
+      <aside class="components-panel col-md-3">
+        <h5 class="components-title"><i class="bi bi-grid-3x3-gap me-2"></i>Form Components</h5>
+        
+        <div class="component-list">
+          <div class="component-item" 
+               *ngFor="let component of components" 
+               draggable="true"
+               (dragstart)="dragStart($event, component)">
+            <div class="component-icon">
+              <i [class]="component.icon"></i>
+            </div>
+            <span class="component-name">{{component.name}}</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Form Canvas -->
+      <main class="form-canvas col-md-6" 
+            droppable 
+            (dragover)="dragOver($event)" 
+            (drop)="drop($event)">
+        <div class="canvas-header">
+          <h4>Form Canvas</h4>
+          <p>Drag and drop components here to build your form</p>
+        </div>
+
+        <div class="form-preview">
+          <h3 *ngIf="formName">{{formName}}</h3>
+          
+          <!-- Dynamically added form components will appear here -->
+          <div *ngFor="let item of formItems; let i = index" 
+               class="form-item"
+               (click)="selectItem(i)"
+               [class.selected]="selectedItemIndex === i">
+            <div class="form-item-content">
+              <app-dynamicfield-component [config]="item"></app-dynamicfield-component>
+            </div>
+            <div class="form-item-actions" *ngIf="selectedItemIndex === i">
+              <button class="btn btn-sm btn-remove">
+                <i class="bi bi-trash"></i>
+              </button>
+              <button class="btn btn-sm btn-settings ms-2">
+                <i class="bi bi-gear"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="empty-state" *ngIf="formItems.length === 0">
+            <i class="bi bi-inbox"></i>
+            <p>Drop form components here to get started</p>
+          </div>
+        </div>
+      </main>
+
+      <!-- Properties Panel -->
+      <aside class="properties-panel col-md-3">
+        <h5 class="properties-title"><i class="bi bi-sliders me-2"></i>Properties</h5>
+        
+        <div class="properties-content" *ngIf="selectedItemIndex !== null">
+          <h6>{{formItems[selectedItemIndex].type}} Properties</h6>
+          
+          <div class="mb-3">
+            <label class="form-label">Label</label>
+            <input type="text" class="form-control" 
+                   [(ngModel)]="formItems[selectedItemIndex].label">
+          </div>
+        <div class="mb-3">
+            <label class="form-label">AI Prompt</label>
+            <input type="textarea" class="form-control size-5" 
+                   [(ngModel)]="formItems[selectedItemIndex].label">
+          </div>
+          
+          <div class="mb-3" *ngIf="formItems[selectedItemIndex].type === 'text'">
+            <label class="form-label">Placeholder</label>
+            <input type="text" class="form-control" 
+                   [(ngModel)]="formItems[selectedItemIndex].placeholder">
+          </div>
+          
+          <!-- More property fields based on component type -->
+        </div>
+        
+        <div class="empty-state" *ngIf="selectedItemIndex === null">
+          <i class="bi bi-node-plus"></i>
+          <p>Select a component to edit its properties</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="builder-footer">
+    <button class="btn btn-save">
+      <i class="bi bi-save me-2"></i>Save Form
+    </button>
+    <button class="btn btn-preview">
+      <i class="bi bi-eye me-2"></i>Preview
+    </button>
+  </footer>
+</div>

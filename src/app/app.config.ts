@@ -4,8 +4,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { AuthInterceptor } from './auth-interceptor';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { AuthInterceptor } from './auth-interceptor/auth-interceptor';
 // adjust path if needed
 
 export const appConfig: ApplicationConfig = {

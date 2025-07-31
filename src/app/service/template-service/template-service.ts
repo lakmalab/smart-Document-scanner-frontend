@@ -4,6 +4,19 @@ import { Observable, map } from 'rxjs';
 import { Template } from '../../model/template.model';
 import { ApiService } from '../api-service/api-service';
 
+// Define the TemplateCreateRequest interface
+interface TemplateCreateRequest {
+  templateId: number | null;
+  templateName: string;
+  documentType: string;
+  createdByUserId: number;
+  fields: {
+    fieldName: string;
+    fieldType: string;
+    required: boolean;
+  }[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,4 +44,39 @@ export class TemplateService {
     const colorIndex = templateId % colors.length;
     return `https://placehold.co/600x400/${colors[colorIndex]}/ffffff?text=Template+${templateId}`;
   }
+   createTemplate(
+    templateName: string,
+    documentType: string,
+    userId: number,
+    fields: { label: string; type: string; required: boolean }[]
+  ): Observable<Template> {
+    const request: TemplateCreateRequest = {
+      templateId: null,
+      templateName: templateName,
+      documentType: documentType,
+      createdByUserId: userId,
+      fields: fields.map(field => ({
+        fieldName: field.label,
+        fieldType: this.mapFieldType(field.type),
+        required: field.required
+      }))
+    };
+
+    return this.api.post<Template>('api/templates', request);
+  }
+
+  private mapFieldType(uiType: string): string {
+    // Map UI field types to backend field types
+    const typeMap: { [key: string]: string } = {
+      'text': 'String',
+      'textarea': 'String',
+      'date': 'Date',
+      'select': 'String',
+      'checkbox': 'Boolean',
+      'radio': 'String',
+      'number': 'Number'
+    };
+    return typeMap[uiType] || 'String';
+  }
+
 }
