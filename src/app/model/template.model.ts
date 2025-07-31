@@ -45,3 +45,16 @@ export interface User {
   province?: string;
   password?: string;
 }
+
+export interface TemplateCreateRequest {
+  templateId: number | null;
+  templateName: string;
+  documentType: string;
+  createdByUserId: number;
+  fields: {
+    fieldName: string;
+    fieldType: string;
+    aiPrompt: string;
+    required: boolean;
+  }[];
+}

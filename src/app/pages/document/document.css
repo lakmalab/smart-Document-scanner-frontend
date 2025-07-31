@@ -1,24 +1,336 @@
-form input {
+/* Main container */
+.document-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Header styles */
+.document-header {
+  background: linear-gradient(135deg, #f8f9fa, #f8f9fa);
+  color: #ffffff;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.document-header h1 {
+  font-weight: 600;
+  margin: 0;
+  color: #9b3cca;
+}
+
+.status-indicator .badge {
+  padding: 0.5rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+/* Form panel */
+.form-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.scan-controls {
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.scan-select {
+  flex: 1;
+  border: 1px solid #e9ecef;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+}
+
+.btn-scan-action {
+  background-color: #9c27b0;
+  color: white;
   border: none;
-  border-bottom: 1px solid #ccc;
-  border-radius: 0;
-  box-shadow: none;
+  border-radius: 8px;
+  width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-form input:focus {
+
+.template-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.template-header h3 {
+  color: #6a0dad;
+  margin: 0;
+}
+
+.template-image img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.document-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field {
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #4a148c;
+}
+
+.field-input {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  padding-right: 42px;
+}
+
+.field-input:focus {
+  border-color: #9c27b0;
+  box-shadow: 0 0 0 2px rgba(154, 39, 176, 0.2);
+}
+
+.field-actions {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.btn-field-action {
+  background: transparent;
+  border: none;
+  color: #9c27b0;
+  font-size: 1.1rem;
+  padding: 0.25rem;
+}
+
+.form-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+}
+
+.btn-primary {
+  background-color: #6a0dad;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  flex: 1;
+}
+
+.btn-primary:disabled {
+  background-color: #e1bee7;
+}
+
+.btn-secondary {
+  background-color: #ffffff;
+  border: 1px solid #6a0dad;
+  color: #6a0dad;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Documents panel */
+.documents-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.documents-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-container {
+  flex: 1;
+  position: relative;
+}
+
+.search-container i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.search-input:focus {
+  border-color: #9c27b0;
   outline: none;
-  box-shadow: none;
-  border-color: #6f42c1;
 }
-.bg-warning {
-  background-color: #f7d9a2 !important;
+
+.status-filter {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  min-width: 140px;
 }
-.bg-secondary {
-  background-color: #b8988c !important;
+
+.documents-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
 }
-.bg-light {
-  background-color: #d5c7f9 !important;
+
+/* Empty states */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
 }
-.bi {
-  cursor: pointer;
-  font-size: 1.2rem;
+
+.empty-state i {
+  font-size: 2.5rem;
+  color: #9c27b0;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+/* Add these styles to your existing CSS */
+
+/* Main container adjustments */
+.document-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Changed from min-height to height */
+  overflow: hidden; /* Prevent double scrollbars */
+}
+
+.document-main-content {
+  flex: 1;
+  overflow: hidden; /* Contain the scrolling to child elements */
+}
+
+/* Form panel adjustments */
+.form-panel {
+  display: flex;
+  flex-direction: column;
+  height: 60%;
+}
+
+.document-form {
+  display: flex;
+  flex-direction: column;
+  height: 60%;
+}
+
+.fields-container {
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Documents panel adjustments */
+.documents-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.documents-list {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-purple) var(--gray-light);
+}
+
+/* Custom scrollbar for Webkit browsers */
+.documents-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.documents-list::-webkit-scrollbar-track {
+  background: var(--gray-light);
+  border-radius: 10px;
+}
+
+.documents-list::-webkit-scrollbar-thumb {
+  background-color: var(--primary-purple);
+  border-radius: 10px;
+  border: 2px solid var(--gray-light);
+}
+
+/* Empty state adjustments */
+.empty-state {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--gray-dark);
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: var(--primary-purple);
+  margin-bottom: 1rem;
+  opacity: 0.7;
 }

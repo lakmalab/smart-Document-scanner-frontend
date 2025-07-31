@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DocumentCard } from "../../tools/document-card/document-card";
@@ -11,11 +11,15 @@ import { TemplateService } from '../../service/template-service/template-service
 
 @Component({
   selector: 'app-document',
-  imports: [NgFor, FormsModule, NgIf, DocumentCard],
+  imports: [NgFor, FormsModule, NgIf, DocumentCard,NgClass],
   templateUrl: './document.html',
   styleUrls: ['./document.css']
 })
 export class DocumentComponent implements OnInit {
+templateImage: any;
+saveDraft() {
+throw new Error('Method not implemented.');
+}
 handleApprove(_t77: number) {
 throw new Error('Method not implemented.');
 }

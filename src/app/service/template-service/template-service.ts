@@ -3,19 +3,9 @@ import { Observable, map } from 'rxjs';
 
 import { Template } from '../../model/template.model';
 import { ApiService } from '../api-service/api-service';
-
+import { TemplateCreateRequest } from '../../model/template.model';
 // Define the TemplateCreateRequest interface
-interface TemplateCreateRequest {
-  templateId: number | null;
-  templateName: string;
-  documentType: string;
-  createdByUserId: number;
-  fields: {
-    fieldName: string;
-    fieldType: string;
-    required: boolean;
-  }[];
-}
+
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +38,9 @@ export class TemplateService {
     templateName: string,
     documentType: string,
     userId: number,
-    fields: { label: string; type: string; required: boolean }[]
+    fields: {
+      promt: string; label: string; type: string; required: boolean 
+}[]
   ): Observable<Template> {
     const request: TemplateCreateRequest = {
       templateId: null,
@@ -58,6 +50,7 @@ export class TemplateService {
       fields: fields.map(field => ({
         fieldName: field.label,
         fieldType: this.mapFieldType(field.type),
+        aiPrompt: field.promt,
         required: field.required
       }))
     };

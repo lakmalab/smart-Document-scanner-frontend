@@ -5,7 +5,7 @@ import { User } from '../../model/template.model';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DynamicfieldComponent } from '../../tools/dynamicfield-component/dynamicfield-component';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-template-builder',
@@ -23,7 +23,7 @@ export class TemplateBuilder implements OnInit {
 
   private router = inject(Router);
   private templateService = inject(TemplateService);
-  private toastr = inject(ToastrService);
+  private toastr = inject(ToastrService); 
 
   components = [
     { type: 'text', name: 'Text Field', icon: 'bi bi-input-cursor-text' },
@@ -73,6 +73,7 @@ export class TemplateBuilder implements OnInit {
     const newItem = {
       type: componentData.type,
       label: componentData.name,
+      promt: componentData.promt,
       placeholder: '',
       required: false
     };
@@ -93,17 +94,17 @@ export class TemplateBuilder implements OnInit {
 
   saveTemplate(): void {
     if (!this.formName) {
-      (this.toastr as ToastrService).error('Please enter a template name');
+      this.toastr.error('Please enter a template name');
       return;
     }
 
     if (this.formItems.length === 0) {
-      (this.toastr as ToastrService).error('Please add at least one field to the template');
+      this.toastr.error('Please add at least one field to the template');
       return;
     }
 
     if (!this.userData?.userId) {
-      (this.toastr as ToastrService).error('User information not available');
+      this.toastr.error('User information not available');
       return;
     }
 
@@ -115,19 +116,20 @@ export class TemplateBuilder implements OnInit {
       this.userData.userId,
       this.formItems.map(item => ({
         label: item.label,
+        promt:item.promt || item.label,
         type: item.type,
         required: item.required || false
       }))
     ).subscribe({
       next: (createdTemplate) => {
-        (this.toastr as ToastrService).success('Template created successfully');
+        this.toastr.success('Template created successfully');
         this.isSaving = false;
         // Optionally navigate to templates list or reset the form
         this.resetForm();
       },
       error: (err) => {
         console.error('Error creating template:', err);
-        (this.toastr as ToastrService).error('Failed to create template');
+        this.toastr.error('Failed to create template');
         this.isSaving = false;
       }
     });

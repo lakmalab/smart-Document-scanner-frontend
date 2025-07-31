@@ -1,29 +1,56 @@
 <div class="form-builder-container">
   <!-- Header Section -->
-  <header class="builder-header">
+<header class="builder-header">
     <div class="container-fluid">
-      <div class="row align-items-center">
-        <div class="col-md-8">
-          <h1 class="mb-3">Form Builder</h1>
-          <div class="form-name-section mb-3">
-            <input type="text" class="form-control form-name-input" 
-                   placeholder="Enter form name" [(ngModel)]="formName">
-          </div>
-        </div>
-        <div class="col-md-4 text-end">
-          <div class="form-image-upload">
-            <label class="btn image-upload-btn">
-              <i class="bi bi-image me-2"></i>Upload Template Image
-              <input type="file" hidden (change)="handleImageUpload($event)">
-            </label>
-            <div class="image-preview mt-2" *ngIf="formImage">
-              <img [src]="formImage" alt="Form template" class="img-thumbnail">
+        <div class="row mb-4">
+            <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mb-0 ">Template Builder</h1>
+                <button class="btn btn-save" (click)="saveTemplate()" [disabled]="isSaving">
+                <span *ngIf="!isSaving">
+                    <i class="bi bi-save me-2"></i>Save Template
+                </span>
+                <span *ngIf="isSaving">
+                    <i class="bi bi-hourglass me-2"></i>Saving...
+                </span>
+                </button>
             </div>
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-  </header>
+
+    <div class="row align-items-end g-3">
+      <!-- Template Name -->
+      <div class="col-md-4">
+        <label class="form-label">Template Name</label>
+        <input type="text" class="form-control form-name-input"
+               placeholder="Enter template name" [(ngModel)]="formName">
+      </div>
+
+      <!-- Document Type -->
+      <div class="col-md-4">
+        <label class="form-label">Document Type</label>
+        <select class="form-control" [(ngModel)]="documentType">
+          <option *ngFor="let type of documentTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="col-md-4">
+        <label class="form-label d-block">Template Image</label>
+        <label class="btn btn-outline-secondary w-100">
+          <i class="bi bi-image me-2"></i>Upload Template Image
+          <input type="file" hidden (change)="handleImageUpload($event)">
+        </label>
+        <div class="image-preview mt-2" *ngIf="formImage">
+          <img [src]="formImage" alt="Template preview" class="img-thumbnail w-100">
+        </div>  
+      </div>
+      
+      
+    </div>
+</header>
+
 
   <!-- Main Content -->
   <div class="builder-main-content container-fluid">
@@ -98,7 +125,7 @@
         <div class="mb-3">
             <label class="form-label">AI Prompt</label>
             <input type="textarea" class="form-control size-5" 
-                   [(ngModel)]="formItems[selectedItemIndex].label">
+                   [(ngModel)]="formItems[selectedItemIndex].promt">
           </div>
           
           <div class="mb-3" *ngIf="formItems[selectedItemIndex].type === 'text'">
@@ -120,11 +147,7 @@
 
   <!-- Footer -->
   <footer class="builder-footer">
-    <button class="btn btn-save">
-      <i class="bi bi-save me-2"></i>Save Form
-    </button>
-    <button class="btn btn-preview">
-      <i class="bi bi-eye me-2"></i>Preview
-    </button>
+    
+    
   </footer>
 </div>
