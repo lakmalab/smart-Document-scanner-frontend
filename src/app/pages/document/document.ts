@@ -8,6 +8,7 @@ import { DocumentService } from '../../service/document-service/document-service
 import { Template, User } from '../../model/template.model';
 import { Document2, DocumentCardItem, ExtractedField } from '../../model/document.model';
 import { TemplateService } from '../../service/template-service/template-service';
+import { ExportService } from '../../service/export-service/export-service';
 
 @Component({
   selector: 'app-document',
@@ -27,6 +28,7 @@ throw new Error('Method not implemented.');
   private route = inject(ActivatedRoute);
   private docService = inject(DocumentService);
   private tempService = inject(TemplateService);
+  private exportService = inject(ExportService);
   userData: User | null = null;
   fields: ExtractedField[] = [];
   cardList: DocumentCardItem[] = [];
@@ -95,7 +97,10 @@ throw new Error('Method not implemented.');
     this.submitted = false;
     this.fields = doc.fields.map(field => ({ ...field }));
   }
-
+  export(): void {
+     const templateId = Number(this.route.snapshot.paramMap.get('templateId'));
+    this.exportService.exportTemplateAsExcel(templateId);
+  }
   handleDelete(index: number): void {
     const doc = this.cardList[index];
     this.docService.deleteDocument(doc.documentId).subscribe({

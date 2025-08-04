@@ -6,6 +6,7 @@ import { ApiKeySettings } from '../../model/settings.model';
 
 @Injectable({ providedIn: 'root' })
 export class ApiKeyService {
+
  
  private api = inject(ApiService);
   getApiKeySettings(userId: number): Observable<ApiKeySettings> {
@@ -13,6 +14,6 @@ export class ApiKeyService {
   }
 
   saveApiKey(userId: number, data: ApiKeySettings): Observable<any> {
-    return this.api.post(`auth/add-apikey/${userId}`, data);
+    return this.api.post(`api/add-apikey/${userId}`, data);
   }
 }

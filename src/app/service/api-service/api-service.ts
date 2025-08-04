@@ -41,4 +41,10 @@ export class ApiService {
   getRaw(endpoint: string, options?: any): Observable<any> {
     return this.http.get(`${this.baseUrl}/${endpoint}`, options);
   }
+  postBlob(endpoint: string, body: any = null): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}/${endpoint}`, body, {
+      responseType: 'blob'
+    });
+  }
+
 }
