@@ -1,0 +1,12 @@
+<!-- custom-toast-component.html -->
+<div *ngIf="showToast" class="custom-toast" [ngClass]="'toast-' + type">
+  <div class="toast-icon">
+    <i [class]="icon"></i>
+  </div>
+  <div class="toast-content">
+    <div class="toast-message">{{message}}</div>
+  </div>
+  <button class="toast-close" (click)="close()">
+    <i class="bi bi-x"></i>
+  </button>
+</div>

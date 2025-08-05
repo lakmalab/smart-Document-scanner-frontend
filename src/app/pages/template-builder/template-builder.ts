@@ -6,6 +6,9 @@ import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DynamicfieldComponent } from '../../tools/dynamicfield-component/dynamicfield-component';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustomToastComponent } from '../../tools/CustomToastComponent/custom-toast-component/custom-toast-component';
+import { CustomToastService } from '../../service/toast/custom-toast.service';
 
 @Component({
   selector: 'app-template-builder',
@@ -20,11 +23,10 @@ export class TemplateBuilder implements OnInit {
   formImage: string | null = null;
   selectedItemIndex: number | null = null;
   isSaving: boolean = false;
-
+ showUrlInput: boolean = false;
+errorMessage: string = '';
   private router = inject(Router);
   private templateService = inject(TemplateService);
-  private toastr = inject(ToastrService); 
-
   components = [
     { type: 'text', name: 'Text Field', icon: 'bi bi-input-cursor-text' },
     { type: 'textarea', name: 'Text Area', icon: 'bi bi-text-paragraph' },
@@ -39,25 +41,51 @@ export class TemplateBuilder implements OnInit {
   documentTypes: string[] = ['Form', 'Certificate', 'Contract', 'Application', 'Report'];
   formItems: any[] = [];
   userData: User | null = null;
+  profilePictureUrl: string = '';
+  profilePicturePath: string = 'images/profiles.png';
 
-  constructor() {}
+  constructor(private toast: CustomToastService) {}
 
   ngOnInit(): void {
     this.userData = this.router.getCurrentNavigation()?.extras.state?.['user'] 
                  || JSON.parse(localStorage.getItem('user') || 'null');
   }
-
-  handleImageUpload(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.formImage = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
+handleImageError($event: ErrorEvent) {
+throw new Error('Method not implemented.');
+}
+ toggleUrlInput() {
+    this.showUrlInput = !this.showUrlInput;
+    console.log('Input visibility toggled to:', this.showUrlInput); // Debug
   }
+private modalService = inject(NgbModal);
+
+// Update your update method
+async updateProfilePicture(): Promise<void> {
+  this.errorMessage = '';
   
+  if (!this.profilePictureUrl?.trim()) {
+    this.errorMessage = 'Please enter a valid URL';
+    return;
+  }
+
+  try {
+    new URL(this.profilePictureUrl);
+    this.profilePicturePath = this.profilePictureUrl;
+    // Close the modal programmatically
+    this.modalService.dismissAll();
+  } catch (e) {
+    this.errorMessage = 'Please enter a valid URL (include http:// or https://)';
+  }
+}
+
+// Add this method to open the modal
+openImageUrlModal(content: any): void {
+  this.profilePictureUrl = this.profilePicturePath === 'images/profiles.png' 
+    ? '' 
+    : this.profilePicturePath;
+  this.errorMessage = '';
+  this.modalService.open(content, { ariaLabelledBy: 'imageUrlModalLabel' });
+}
   dragStart(event: DragEvent, component: any): void {
     event.dataTransfer?.setData('text/plain', JSON.stringify(component));
   }
@@ -94,17 +122,19 @@ export class TemplateBuilder implements OnInit {
 
   saveTemplate(): void {
     if (!this.formName) {
-      this.toastr.error('Please enter a template name');
+       // In your component
+      this.toast.show('Please enter a template name!', 'error');
       return;
     }
 
     if (this.formItems.length === 0) {
-      this.toastr.error('Please add at least one field to the template');
+       this.toast.show('Please add at least one field to the template!', 'sad');
+     
       return;
     }
 
     if (!this.userData?.userId) {
-      this.toastr.error('User information not available');
+       this.toast.show('User information not available!', 'error');
       return;
     }
 
@@ -113,6 +143,7 @@ export class TemplateBuilder implements OnInit {
     this.templateService.createTemplate(
       this.formName,
       this.documentType,
+      this.profilePicturePath,
       this.userData.userId,
       this.formItems.map(item => ({
         label: item.label,
@@ -122,14 +153,17 @@ export class TemplateBuilder implements OnInit {
       }))
     ).subscribe({
       next: (createdTemplate) => {
-        this.toastr.success('Template created successfully');
+        console.log(createdTemplate);
+         this.toast.show('Template created successfully!', 'success', 'bi-check-circle-fill');
+    
         this.isSaving = false;
         // Optionally navigate to templates list or reset the form
         this.resetForm();
       },
       error: (err) => {
         console.error('Error creating template:', err);
-        this.toastr.error('Failed to create template');
+        this.toast.show('This is a Custom Toast', 'error', 'bi-star-fill');
+     
         this.isSaving = false;
       }
     });
