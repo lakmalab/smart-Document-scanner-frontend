@@ -18,6 +18,12 @@ import { ExportService } from '../../service/export-service/export-service';
 })
 export class DocumentComponent implements OnInit {
 templateImage: any;
+isExporting: boolean = false;
+exportType: string = 'xlsx';
+startDate: string = '';
+endDate: string = '';
+docStatus: string = 'reviewed'; 
+
 saveDraft() {
 throw new Error('Method not implemented.');
 }
@@ -97,10 +103,39 @@ throw new Error('Method not implemented.');
     this.submitted = false;
     this.fields = doc.fields.map(field => ({ ...field }));
   }
-  export(): void {
-     const templateId = Number(this.route.snapshot.paramMap.get('templateId'));
-    this.exportService.exportTemplateAsExcel(templateId);
+openExportModal(): void {
+  const modal = new (window as any).bootstrap.Modal(document.getElementById('exportModal'));
+  modal.show();
+}
+
+confirmExport(): void {
+  const templateId = Number(this.route.snapshot.paramMap.get('templateId'));
+
+  if (!this.startDate || !this.endDate) {
+    alert('Please select both start and end dates.');
+    return;
   }
+
+  this.isExporting = true;
+
+  this.exportService.exportTemplate(templateId, this.exportType, this.startDate, this.endDate,this.docStatus)
+    .subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `template-${templateId}-status.${this.docStatus}-export.${this.exportType}`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+        this.isExporting = false;
+        (window as any).bootstrap.Modal.getInstance(document.getElementById('exportModal')).hide();
+      },
+      error: () => {
+        this.isExporting = false;
+        alert('Export failed.');
+      }
+    });
+}
   handleDelete(index: number): void {
     const doc = this.cardList[index];
     this.docService.deleteDocument(doc.documentId).subscribe({

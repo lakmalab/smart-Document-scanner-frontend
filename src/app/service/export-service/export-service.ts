@@ -20,6 +20,11 @@ export class ExportService {
       window.URL.revokeObjectURL(url);
     });
   }
+  exportTemplate(templateId: number, type: string, start: string, end: string, docStatus: string) {
+  const params = { startDate: start, endDate: end };
+  return this.apiService.postBlob(`api/export/template/${templateId}/${type}/${docStatus}`, params);
+  }
+
 
 
 }
