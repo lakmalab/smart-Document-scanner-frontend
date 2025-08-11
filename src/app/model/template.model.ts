@@ -19,6 +19,7 @@ export interface Document2 {
 export interface Template {
   templateId: number;
   template_name: string;
+  templateImagePath?: string;
   field_count: number;
   image_url: string;
   fields: {
@@ -37,18 +38,21 @@ export interface MobileTokenSettings {
 
 export interface User {
   userId: number;
+  profilePicturePath?: string;
   name: string;
   email: string;
   address?: string;
-  contact?: string;
+  contactNumber?: string;
   city?: string;
   province?: string;
   password?: string;
+  role?: string;
 }
 
 export interface TemplateCreateRequest {
   templateId: number | null;
   templateName: string;
+  templateImagePath: string;
   documentType: string;
   createdByUserId: number;
   fields: {

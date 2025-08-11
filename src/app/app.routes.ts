@@ -14,7 +14,7 @@ import { TemplateBuilder } from './pages/template-builder/template-builder';
 export const routes: Routes = [
     {
         path: '',          
-        component: LoginComponent,  
+        component: HomeComponent,  
     },
     {
         path:'login',

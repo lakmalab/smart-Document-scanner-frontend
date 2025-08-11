@@ -1,0 +1,114 @@
+/* custom-toast-component.css */
+.custom-toast {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin: 10px;
+  min-height: 60px;
+  max-width: 350px;
+  color: white;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.toast-icon {
+  margin-right: 15px;
+  font-size: 24px;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.7;
+  margin-left: 15px;
+}
+
+/* Type variations */
+.toast-info {
+  background-color: #2196F3;
+}
+
+.toast-success {
+  background-color: #4CAF50;
+}
+
+.toast-warning {
+  background-color: #FF9800;
+}
+
+.toast-error {
+  background-color: #F44336;
+}
+
+.toast-happy {
+  background-color: #FFC107;
+  color: #333;
+}
+
+.toast-sad {
+  background-color: #9E9E9E;
+}
+
+.toast-save {
+  background-color: #4CAF50;
+}
+
+.toast-delete {
+  background-color: #F44336;
+}
+
+.toast-confuse {
+  background-color: #9C27B0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* styles.css or your global CSS file */
+.toast-container-top {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050; /* Higher than most other elements */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 350px;
+  max-width: 100%;
+}
+
+.custom-toast {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-height: 60px;
+  color: white;
+  animation: slideInFromTop 0.3s ease-out;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Keep your existing toast type styles (info, success, etc.) */

@@ -21,6 +21,10 @@ export class LoginComponent {
   errorMessage = '';
 
   onLogin(): void {
+    if (!this.email.trim() || !this.password.trim()) {
+      this.errorMessage = 'Please enter both email and password';
+      return; 
+    }
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (res) => {
         this.authService.saveAuthData(res.token, res.user);

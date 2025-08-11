@@ -13,13 +13,26 @@ import { TemplateCreateRequest } from '../../model/template.model';
 export class TemplateService {
   private api = inject(ApiService);
 
+  updatetemplateImagePath(templateId: number, url: string): Observable<Template> {
+      return this.api.post<Template>(
+        `api/templates/${templateId}/template-image`,
+        { url } ).pipe(
+        map(Template => {
+          // Decode the URL when received from server
+          if (Template.templateImagePath) {
+            Template.templateImagePath = decodeURIComponent(Template.templateImagePath);
+          }
+          return Template;
+        })
+      );
+    }
   fetchTemplates(userId: number): Observable<Template[]> {
     return this.api.get<any[]>(`api/templates/by-user/${userId}`).pipe(
       map(templates => templates.map(template => ({
         templateId: template.templateId,
         template_name: template.templateName,
         field_count: template.fields.length,
-        image_url: this.getPlaceholderImage(template.templateId),
+        image_url: template.templateImagePath || this.getPlaceholderImage(template.templateId),
         fields: template.fields
       })))
     );
@@ -37,6 +50,7 @@ export class TemplateService {
    createTemplate(
     templateName: string,
     documentType: string,
+    templateImagePath: string,
     userId: number,
     fields: {
       promt: string; label: string; type: string; required: boolean 
@@ -45,6 +59,7 @@ export class TemplateService {
     const request: TemplateCreateRequest = {
       templateId: null,
       templateName: templateName,
+      templateImagePath: templateImagePath,
       documentType: documentType,
       createdByUserId: userId,
       fields: fields.map(field => ({

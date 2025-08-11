@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../service/auth-service/auth-service';
 import { RegisterRequest } from '../../model/auth.model';
+import { CustomToastService } from '../../service/toast/custom-toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -21,6 +22,7 @@ export class SignupComponent {
   password = '';
   errorMessage = '';
   successMessage = '';
+  private toast: CustomToastService = inject(CustomToastService);
 
   onRegister(): void {
     const request: RegisterRequest = {
@@ -31,11 +33,12 @@ export class SignupComponent {
 
     this.authService.register(request).subscribe({
       next: () => {
-        this.successMessage = 'Registration successful!';
+         this.toast.show( 'Registration successful!', 'happy', 'bi-star-fill');
+    
         this.router.navigate(['/login']);
       },
       error: () => {
-        this.errorMessage = 'Registration failed. Try again.';
+          this.toast.show('Registration failed. Try again', 'error', 'bi-star-fill');
       }
     });
   }
