@@ -36,6 +36,7 @@ throw new Error('Method not implemented.');
   private tempService = inject(TemplateService);
   private exportService = inject(ExportService);
   userData: User | null = null;
+  tempfields: Template[] = [];
   fields: ExtractedField[] = [];
   cardList: DocumentCardItem[] = [];
   editingDocumentId: number | null = null;
@@ -63,13 +64,15 @@ throw new Error('Method not implemented.');
     this.tempService.getTemplate(templateId).subscribe({
       next: (template: Template) => {
         this.templateName = template.template_name || 'Document Form';
-        this.fields = template.fields.map(field => ({
-          fieldId: field.fieldId,
-          fieldName: field.fieldName,
+        this.fields = template.fields.map(fields => ({
+          fieldId: fields.fieldId,
+          fieldName: fields.fieldName,
           value: '',
           confidenceScore: 1.0,
-          status: 'Pending'
+          status:  "Pending",
+          type: fields.fieldType
         }));
+        this.tempfields = [template];
       },
       error: (err) => console.error('Failed to load template:', err)
     });
@@ -97,12 +100,37 @@ throw new Error('Method not implemented.');
     });
   }
 
-  handleEdit(index: number): void {
-    const doc = this.cardList[index];
-    this.editingDocumentId = doc.documentId;
-    this.submitted = false;
-    this.fields = doc.fields.map(field => ({ ...field }));
-  }
+handleEdit(index: number): void {
+  const doc = this.cardList[index];
+  console.log('Editing document:', doc);
+
+  this.editingDocumentId = doc.documentId;
+  this.submitted = false;
+
+  console.log('Template fields:', this.tempfields);
+
+  this.fields = doc.fields.map(field => {
+    console.log('Checking field:', field);
+
+    const matchingTemplateField = this.tempfields.length
+      ? this.tempfields[0].fields.find(
+          tField => tField.fieldName === field.fieldName
+        )
+      : null;
+
+    console.log('Matching template field:', matchingTemplateField);
+
+    return {
+      ...field,
+      type: matchingTemplateField ? matchingTemplateField.fieldType : ''
+    };
+  });
+
+  console.log('Mapped fields with type:', this.fields);
+}
+
+
+
 openExportModal(): void {
   const modal = new (window as any).bootstrap.Modal(document.getElementById('exportModal'));
   modal.show();

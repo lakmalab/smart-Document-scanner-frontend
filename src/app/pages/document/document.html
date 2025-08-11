@@ -63,7 +63,7 @@
               <div class="form-field" *ngFor="let field of fields">
                 <label class="field-label">{{ field.fieldName }}</label>
                 <input
-                  type="text"
+                  [type]="field.type"
                   [(ngModel)]="field.value"
                   [name]="'field_' + field.fieldId"
                   class="form-control field-input"

@@ -77,7 +77,13 @@ async updateProfilePicture(): Promise<void> {
     this.errorMessage = 'Please enter a valid URL (include http:// or https://)';
   }
 }
-
+private mapFieldType(uiType: string): string {
+  switch (uiType) {
+    case 'date': return 'date';
+    case 'checkbox': return 'boolean';
+    default: return 'string';
+  }
+}
 // Add this method to open the modal
 openImageUrlModal(content: any): void {
   this.profilePictureUrl = this.profilePicturePath === 'images/profiles.png' 
@@ -148,7 +154,7 @@ openImageUrlModal(content: any): void {
       this.formItems.map(item => ({
         label: item.label,
         promt:item.promt || item.label,
-        type: item.type,
+        type: this.mapFieldType(item.type),
         required: item.required || false
       }))
     ).subscribe({
