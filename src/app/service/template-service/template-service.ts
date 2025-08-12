@@ -41,6 +41,9 @@ export class TemplateService {
   getTemplate(templateId: number): Observable<Template> {
     return this.api.get<Template>(`api/templates/${templateId}`);
   }
+  deleteTemplate(templateId: number): Observable<Template> {
+    return this.api.delete<Template>(`api/templates/${templateId}`);
+  }
 
   private getPlaceholderImage(templateId: number): string {
     const colors = ['4a90e2', '50e3c2', 'e35050', 'b8e986', '7ed321', 'f5a623'];

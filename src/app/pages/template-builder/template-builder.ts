@@ -45,7 +45,7 @@ errorMessage: string = '';
   profilePicturePath: string = 'images/profiles.png';
 
   constructor(private toast: CustomToastService) {}
-
+  private modalService = inject(NgbModal);
   ngOnInit(): void {
     this.userData = this.router.getCurrentNavigation()?.extras.state?.['user'] 
                  || JSON.parse(localStorage.getItem('user') || 'null');
@@ -57,9 +57,9 @@ throw new Error('Method not implemented.');
     this.showUrlInput = !this.showUrlInput;
     console.log('Input visibility toggled to:', this.showUrlInput); // Debug
   }
-private modalService = inject(NgbModal);
 
-// Update your update method
+
+
 async updateProfilePicture(): Promise<void> {
   this.errorMessage = '';
   
@@ -154,7 +154,7 @@ openImageUrlModal(content: any): void {
       this.formItems.map(item => ({
         label: item.label,
         promt:item.promt || item.label,
-        type: this.mapFieldType(item.type),
+        type: item.type,
         required: item.required || false
       }))
     ).subscribe({

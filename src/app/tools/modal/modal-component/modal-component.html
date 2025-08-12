@@ -1,0 +1,17 @@
+  <div class="modal-backdrop" *ngIf="modalState.show" (click)="onBackdropClick()"></div>
+    <div class="modal" *ngIf="modalState.show">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{modalState.title}}</h5>
+          </div>
+          <div class="modal-body">
+            <p>{{modalState.message}}</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="modalService.hide()">Cancel</button>
+            <button class="btn btn-primary" (click)="onConfirm()">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>

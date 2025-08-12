@@ -29,9 +29,16 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.router.getCurrentNavigation()?.extras.state?.['user'] 
                  || JSON.parse(localStorage.getItem('user') || 'null');
-
     if (this.userData?.userId) {
-      this.templateService.fetchTemplates(this.userData.userId).subscribe({
+      this.loadDocuments(this.userData);
+    } else {
+      console.error('No user ID available');
+      this.router.navigate(['/login']);
+    }
+  }
+
+  loadDocuments(userData: User):void {
+      this.templateService.fetchTemplates(userData.userId).subscribe({
         next: (data) => {
           this.templates = data;
         },
@@ -39,14 +46,12 @@ export class HomeComponent implements OnInit {
           console.error('Error fetching templates:', err);
         }
       });
-    } else {
-      console.error('No user ID available');
-      this.router.navigate(['/login']);
-    }
   }
-
   navigateToDocument(templateId: number): void {
   this.router.navigate(['/document', templateId]);
+  }
+  navigateToEdit(templateId: number): void {
+  this.router.navigate(['/templatebuilder', templateId]);
   }
   navigateToTemplateBuilder(): void {
   this.router.navigate(['/templatebuilder', this.userData?.userId]);

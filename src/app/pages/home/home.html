@@ -58,6 +58,7 @@
   *ngFor="let template of templates"
   [template]="template"
   (useTemplate)="navigateToDocument($event)"
+   (editTemplate)="navigateToEdit($event)"
   class="col-12 col-sm-6 col-md-4 mb-4"
 ></app-template-card>
   </div>
