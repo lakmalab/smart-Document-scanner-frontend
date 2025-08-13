@@ -20,6 +20,7 @@ export class DocumentCard {
     status: string;
     value: string;
     confidenceScore: number;
+    type: string;
   }[];
 };
   @Output() onEdit = new EventEmitter<void>();

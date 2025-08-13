@@ -4,6 +4,7 @@ export interface ExtractedField {
   value: string;
   confidenceScore: number;
   status: string;
+  type: string;
 }
 
 export interface Document2 {

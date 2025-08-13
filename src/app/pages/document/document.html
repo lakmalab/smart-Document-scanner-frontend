@@ -6,15 +6,16 @@
         <div class="col-md-4">
           <h1 class="mb-0">Document Processor</h1>
         </div>
-        <div class="col-md-4 ">
-        <button class="btn btn-save" (click)="export()" [disabled]="">
-                <span *ngIf="">
-                    <i class="bi bi-save me-2"></i>Save Template
-                </span>
-                <span *ngIf="">
-                    <i class="bi bi-hourglass me-2"></i>Saving...
-                </span>
-                </button>
+        <div class="col-md-4 text-end">
+       <button class="btn btn-save" (click)="openExportModal()" [disabled]="isExporting">
+          <span *ngIf="!isExporting">
+            <i class="bi bi-folder me-2"></i>Export
+          </span>
+          <span *ngIf="isExporting">
+            <i class="bi bi-hourglass me-2"></i>Exporting...
+          </span>
+        </button>
+
         </div>
         <div class="col-md-4 text-end">
           <div class="status-indicator">
@@ -62,7 +63,7 @@
               <div class="form-field" *ngFor="let field of fields">
                 <label class="field-label">{{ field.fieldName }}</label>
                 <input
-                  type="text"
+                  [type]="field.type"
                   [(ngModel)]="field.value"
                   [name]="'field_' + field.fieldId"
                   class="form-control field-input"
@@ -129,4 +130,50 @@
       </div>
     </div>
   </div>
+  <!-- Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exportModalLabel">Export Template</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Export Type -->
+        <div class="mb-3">
+          <label class="form-label">Export Type</label>
+          <select class="form-select" [(ngModel)]="exportType">
+            <option value="xlsx">Excel (.xlsx)</option>
+            <option value="accdb">Access (.accdb)</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Document Status</label>
+          <select class="form-select" [(ngModel)]="docStatus">
+            <option value="all">All</option>
+            <option value="pending">Pending </option>
+            <option value="reviewed">Reviewed </option>
+          </select>
+        </div>
+
+        <!-- Date Range -->
+        <div class="mb-3">
+          <label class="form-label">Start Date</label>
+          <input type="date" class="form-control" [(ngModel)]="startDate">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">End Date</label>
+          <input type="date" class="form-control" [(ngModel)]="endDate">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" (click)="confirmExport()">Export</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>

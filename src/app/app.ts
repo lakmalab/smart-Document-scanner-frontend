@@ -4,10 +4,11 @@ import { Header } from './pages/header/header';
 import { Footer } from './pages/footer/footer';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CustomToastService } from './service/toast/custom-toast.service';
+import { ModalComponent } from "./tools/modal/modal-component/modal-component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer,NgxSkeletonLoaderModule],
+  imports: [RouterOutlet, Header, Footer, NgxSkeletonLoaderModule, ModalComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

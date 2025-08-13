@@ -4,6 +4,7 @@ export interface ExtractedField {
   value: string;
   confidenceScore: number;
   status: string;
+   type: string;
 }
 
 export interface Document2 {
@@ -26,6 +27,7 @@ export interface Template {
     fieldId: number;
     fieldName: string;
     fieldType: string;
+    aiPrompt :string;
     required: boolean;
   }[];
 }
