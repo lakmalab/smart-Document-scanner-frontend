@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TemplateService } from '../../service/template-service/template-service';
-import { User } from '../../model/template.model';
+import { Template, TemplateCreateRequest, User } from '../../model/template.model';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DynamicfieldComponent } from '../../tools/dynamicfield-component/dynamicfield-component';
@@ -44,12 +44,68 @@ errorMessage: string = '';
   profilePictureUrl: string = '';
   profilePicturePath: string = 'images/profiles.png';
 
-  constructor(private toast: CustomToastService) {}
-  private modalService = inject(NgbModal);
+ templateId: number | null = null;
+  isEditMode: boolean = false;
+
+  constructor(
+    private toast: CustomToastService,
+    private route: ActivatedRoute // Add this
+  ) {}
+
   ngOnInit(): void {
+    
     this.userData = this.router.getCurrentNavigation()?.extras.state?.['user'] 
                  || JSON.parse(localStorage.getItem('user') || 'null');
+    
+    // Check for template ID in route
+    this.route.paramMap.subscribe(params => {
+       const id = params.get('id');
+       if (id) {
+                this.templateId = parseInt(id, 10); // Parse the ID if it's not null
+                console.log('Template ID:', this.templateId);
+            } else {
+                console.error('Template ID is missing');
+                // Handle the case where the ID is not present
+        }
+
+      this.isEditMode = !!this.templateId;
+      if (this.templateId) {
+        this.loadTemplate(this.templateId);
+      }
+    });
   }
+  private modalService = inject(NgbModal);
+private loadTemplate(templateId: number): void {
+  this.templateService.getTemplate(templateId).subscribe({
+    next: (template) => {
+
+      this.formName = template.template_name;
+    
+      this.profilePicturePath = template.templateImagePath || 'images/profiles.png';
+      
+      // Map the API fields to your formItems structure
+      this.formItems = template.fields.map((field: any) => {
+        // Map fieldType to match your component types
+        let fieldType = field.fieldType.toLowerCase();
+        if (fieldType === 'string') fieldType = 'text';
+        
+        return {
+          type: fieldType,
+          label: field.fieldName,
+          promt: field.aiPrompt || field.fieldName, // Use AI prompt if available
+          placeholder: '',
+          required: field.required || false
+        };
+      });
+
+      console.log('Mapped form items:', this.formItems); // Debug log
+    },
+    error: (err) => {
+      console.error('Error loading template:', err);
+      this.toast.show('Failed to load template', 'error');
+    }
+  });
+}
 handleImageError($event: ErrorEvent) {
 throw new Error('Method not implemented.');
 }
@@ -125,7 +181,71 @@ openImageUrlModal(content: any): void {
       this.selectedItemIndex = null;
     }
   }
+updateTemplate(): void {
+  if (!this.formName) {
+    this.toast.show('Please enter a template name!', 'error');
+    return;
+  }
 
+  if (this.formItems.length === 0) {
+    this.toast.show('Please add at least one field to the template!', 'sad');
+    return;
+  }
+
+  if (!this.userData?.userId || !this.templateId) {
+    this.toast.show('Invalid template or user information!', 'error');
+    return;
+  }
+
+  this.isSaving = true;
+
+  // Payload matches backend expectation
+  const updateData: TemplateCreateRequest = {
+    templateId: this.templateId,
+    templateName: this.formName,
+    templateImagePath: this.profilePicturePath,
+    documentType: this.documentType, // Add field count
+    createdByUserId: this.userData.userId , // Add image_url (use empty string if not available)
+    fields: this.formItems.map(item => ({
+      fieldId: item.fieldId || 0, // Use 0 as default if fieldId is null/undefined
+      fieldName: item.label,
+      fieldType: this.mapComponentTypeToApiType(item.type),
+      required: item.required || false,
+      aiPrompt: item.promt || item.label
+    }))
+  };
+
+  this.templateService.updateTemplate(this.templateId, updateData).subscribe({
+    next: () => {
+      this.toast.show('Template updated successfully!', 'success', 'bi-check-circle-fill');
+      this.isSaving = false;
+    },
+    error: (err) => {
+      console.error('Error updating template:', err);
+      this.toast.show('Failed to update template', 'error');
+      this.isSaving = false;
+    }
+  });
+}
+
+// Map UI component types to backend-friendly field types
+mapComponentTypeToApiType(type: string): string {
+  switch (type) {
+    case 'text': return 'string';
+    case 'textarea': return 'string';
+    case 'date': return 'date';
+    case 'checkbox': return 'boolean';
+    case 'radio': return 'string';
+    case 'select': return 'string';
+    case 'label': return 'string';
+    case 'button': return 'string';
+    default: return 'string';
+  }
+}
+
+private capitalizeFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
   saveTemplate(): void {
     if (!this.formName) {
        // In your component

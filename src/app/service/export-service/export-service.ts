@@ -21,10 +21,8 @@ export class ExportService {
     });
   }
   exportTemplate(templateId: number, type: string, start: string, end: string, docStatus: string) {
-  const params = { startDate: start, endDate: end };
-  return this.apiService.postBlob(`api/export/template/${templateId}/${type}/${docStatus}`, params);
+    const params = { startDate: start, endDate: end };
+    return this.apiService.postBlob(`api/export/template/${templateId}/${type}/${docStatus}`, params);
   }
-
-
 
 }

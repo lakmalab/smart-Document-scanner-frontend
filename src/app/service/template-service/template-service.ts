@@ -11,7 +11,10 @@ import { TemplateCreateRequest } from '../../model/template.model';
   providedIn: 'root'
 })
 export class TemplateService {
-  private api = inject(ApiService);
+   private api = inject(ApiService);
+    updateTemplate(templateId: number, data: TemplateCreateRequest): Observable<TemplateCreateRequest> {
+    return this.api.put<TemplateCreateRequest>(`api/templates/${templateId}`, data);
+    }
 
   updatetemplateImagePath(templateId: number, url: string): Observable<Template> {
       return this.api.post<Template>(

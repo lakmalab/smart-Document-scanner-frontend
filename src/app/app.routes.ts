@@ -37,6 +37,10 @@ export const routes: Routes = [
         path: 'templatebuilder/:id',
         component: TemplateBuilder
     },
+    { 
+        path: 'template-builder', 
+        component: TemplateBuilder 
+    },
     {
       path: 'settings',
       component: Settings,

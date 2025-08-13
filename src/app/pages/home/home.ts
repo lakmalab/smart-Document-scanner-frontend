@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
   this.router.navigate(['/templatebuilder', templateId]);
   }
   navigateToTemplateBuilder(): void {
-  this.router.navigate(['/templatebuilder', this.userData?.userId]);
+     this.router.navigate(['/template-builder']);
 
   }
 }

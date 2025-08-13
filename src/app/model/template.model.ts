@@ -27,6 +27,7 @@ export interface Template {
     fieldId: number;
     fieldName: string;
     fieldType: string;
+    aiPrompt :string;
     required: boolean;
   }[];
 }
