@@ -9,6 +9,7 @@ import { Template, User } from '../../model/template.model';
 import { Document2, DocumentCardItem, ExtractedField } from '../../model/document.model';
 import { TemplateService } from '../../service/template-service/template-service';
 import { ExportService } from '../../service/export-service/export-service';
+import { CustomToastService } from '../../service/toast/custom-toast.service';
 
 @Component({
   selector: 'app-document',
@@ -23,6 +24,8 @@ exportType: string = 'xlsx';
 startDate: string = '';
 endDate: string = '';
 docStatus: string = 'reviewed'; 
+dateRange: any;
+sortField: any;
 
 saveDraft() {
 throw new Error('Method not implemented.');
@@ -48,7 +51,9 @@ throw new Error('Method not implemented.');
   templateName = '';
   isMobileConnected = false;
   scanMethod: String = '';
-
+ constructor(
+    private toast: CustomToastService
+  ) {}
   ngOnInit(): void {
     this.userData = this.router.getCurrentNavigation()?.extras.state?.['user']
       || JSON.parse(localStorage.getItem('user') || 'null');
@@ -74,7 +79,8 @@ throw new Error('Method not implemented.');
         }));
         this.tempfields = [template];
       },
-      error: (err) => console.error('Failed to load template:', err)
+      error: (err) =>{ console.error('Failed to load template:', err)
+      this.toast.show('Failed to load template', 'error');}
     });
   }
 
@@ -96,7 +102,8 @@ throw new Error('Method not implemented.');
             fields: doc.extractedFields
           }));
       },
-      error: (err) => console.error('Failed to load documents:', err)
+      error: (err) => {console.error('Failed to load documents:', err)
+       this.toast.show('Failed to load documents', 'error');}
     });
   }
 
@@ -140,7 +147,8 @@ confirmExport(): void {
   const templateId = Number(this.route.snapshot.paramMap.get('templateId'));
 
   if (!this.startDate || !this.endDate) {
-    alert('Please select both start and end dates.');
+    this.toast.show('Please select both start and end dates.', 'error');
+  
     return;
   }
 
@@ -160,7 +168,8 @@ confirmExport(): void {
       },
       error: () => {
         this.isExporting = false;
-        alert('Export failed.');
+         this.toast.show('Export failed.', 'error');
+     
       }
     });
 }
@@ -169,9 +178,11 @@ confirmExport(): void {
     this.docService.deleteDocument(doc.documentId).subscribe({
       next: () => {
         this.cardList.splice(index, 1);
+         this.toast.show('Document Deleted Successfully.', 'success');
         console.log('Deleted document:', doc.documentId);
       },
-      error: (err) => console.error('Failed to delete document:', err)
+      error: (err) =>{ console.error('Failed to delete document:', err)
+       this.toast.show('Failed to delete document.', 'error');}
     });
   }
 
@@ -196,8 +207,10 @@ confirmExport(): void {
         this.loadCardList();
         this.submitted = true;
         this.loading = false;
+         this.toast.show('Document Updated.', 'success');
       },
       error: (err) => {
+         this.toast.show('Failed to submit document.', 'error');
         console.error('Failed to submit document:', err);
         this.loading = false;
       }

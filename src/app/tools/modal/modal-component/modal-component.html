@@ -1,17 +1,30 @@
-  <div class="modal-backdrop" *ngIf="modalState.show" (click)="onBackdropClick()"></div>
-    <div class="modal" *ngIf="modalState.show">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{modalState.title}}</h5>
-          </div>
-          <div class="modal-body">
-            <p>{{modalState.message}}</p>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" (click)="modalService.hide()">Cancel</button>
-            <button class="btn btn-primary" (click)="onConfirm()">Confirm</button>
-          </div>
+<div class="modal-backdrop fade show" *ngIf="modalState.show" (click)="onBackdropClick()"></div>
+
+<div class="modal fade show d-block" *ngIf="modalState.show" tabindex="-1" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+      <div class="modal-header border-0 bg-light">
+        <div class="modal-icon bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+          <i class="bi bi-exclamation-circle-fill text-primary"></i>
+        </div>
+        <h5 class="modal-title fw-semibold mb-0">{{modalState.title}}</h5>
+        <button type="button" class="btn-close" (click)="modalService.hide()" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body py-4 px-5">
+        <div class="d-flex align-items-start">
+          <p class="mb-0 text-muted">{{modalState.message}}</p>
         </div>
       </div>
+      
+      <div class="modal-footer border-0 bg-light">
+        <button class="btn btn-outline-secondary rounded-pill px-4 py-2" (click)="modalService.hide()">
+          Cancel
+        </button>
+        <button class="btn btn-danger rounded-pill px-4 py-2 shadow-sm" (click)="onConfirm()">
+          <i class="bi bi-check-circle-fill me-2"></i> Confirm
+        </button>
+      </div>
     </div>
+  </div>
+</div>

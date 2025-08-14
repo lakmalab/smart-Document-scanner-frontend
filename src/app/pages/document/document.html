@@ -6,18 +6,8 @@
         <div class="col-md-4">
           <h1 class="mb-0">Document Processor</h1>
         </div>
-        <div class="col-md-4 text-end">
-       <button class="btn btn-save" (click)="openExportModal()" [disabled]="isExporting">
-          <span *ngIf="!isExporting">
-            <i class="bi bi-folder me-2"></i>Export
-          </span>
-          <span *ngIf="isExporting">
-            <i class="bi bi-hourglass me-2"></i>Exporting...
-          </span>
-        </button>
-
-        </div>
-        <div class="col-md-4 text-end">
+      
+        <div class="col-md-2 ">
           <div class="status-indicator">
             <span class="badge" [ngClass]="{
               'bg-success': isMobileConnected,
@@ -27,6 +17,17 @@
               {{ isMobileConnected ? 'Mobile Connected' : 'Disconnected' }}
             </span>
           </div>
+        </div>
+
+          <div class="col-md-6 text-end">
+          <button class="btn btn-save" (click)="openExportModal()" [disabled]="isExporting">
+              <span *ngIf="!isExporting">
+                <i class="bi bi-folder me-2"></i>Export
+              </span>
+              <span *ngIf="isExporting">
+                <i class="bi bi-hourglass me-2"></i>Exporting...
+              </span>
+            </button>
         </div>
       </div>
     </div>
@@ -111,7 +112,8 @@
               <option value="Approved">Approved</option>
             </select>
           </div>
-
+ <span class="text-muted small">{{ filteredDocs().length }} documents found</span>
+       
           <div class="documents-list flex-grow-1 overflow-auto"> <!-- Added overflow-auto -->
            <app-document-card
         *ngFor="let doc of filteredDocs(); let i = index"

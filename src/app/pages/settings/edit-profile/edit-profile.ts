@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../service/user-service/user-service';
 import { User } from '../../../model/template.model';
 import { NgIf } from '@angular/common';
+import { ModalService } from '../../../service/modal/modal-service';
+import { CustomToastService } from '../../../service/toast/custom-toast.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -12,18 +14,28 @@ import { NgIf } from '@angular/common';
   templateUrl: './edit-profile.html',
   styleUrl: './edit-profile.css'
 })
+
 export class EditProfileComponent implements OnInit {
+  constructor(
+      private toast: CustomToastService
+    ) {}
   showUrlInput: boolean = false;
-errorMessage: string = '';
-handleImageError($event: ErrorEvent) {
-throw new Error('Method not implemented.');
-}
+  errorMessage: string = '';
+  handleImageError($event: ErrorEvent) {
+  throw new Error('Method not implemented.');
+  }
+
  toggleUrlInput() {
     this.showUrlInput = !this.showUrlInput;
     console.log('Input visibility toggled to:', this.showUrlInput); // Debug
   }
-onPasswordChange() {
-     if (!this.userData?.userId) {
+  onPasswordChange() {
+    this.modalService.show(
+        'Confirm Save', 
+        'Are you sure you want to save changes?',
+        () =>  {
+
+ if (!this.userData?.userId) {
       console.error('User ID missing');
       return;
     }
@@ -37,17 +49,23 @@ onPasswordChange() {
     this.userService.updatePassword(this.userData.userId, updatedUser).subscribe({
       next: (updated) => {
         localStorage.setItem('user', JSON.stringify(updated));
-        alert('Profile updated successfully!');
+         this.toast.show('Profile updated successfully!', 'success');
+      
       },
       error: (err) => {
         console.error('Failed to update profile:', err);
-        alert('Profile update failed.');
+         this.toast.show('Profile update failed', 'error')
+     
       }
     });
+
+        }
+      );
+    
 }
   private router = inject(Router);
   private userService = inject(UserService);
-
+   private modalService: ModalService = inject(ModalService);
   userData: User | null = null;
 
   profile = {
@@ -77,7 +95,13 @@ onPasswordChange() {
       this.profile.password = this.userData.password || '';
     }
   }
-
+  save() {
+      this.modalService.show(
+        'Confirm Save', 
+        'Are you sure you want to save changes?',
+        () =>  this.onSave()
+      );
+  }
   onSave(): void {
     if (!this.userData?.userId) {
       console.error('User ID missing');
@@ -96,34 +120,36 @@ onPasswordChange() {
     this.userService.updateUser(this.userData.userId, updatedUser).subscribe({
       next: (updated) => {
         localStorage.setItem('user', JSON.stringify(updated));
-        alert('Profile updated successfully!');
+        this.toast.show('Profile updated successfully!', 'success');
       },
       error: (err) => {
         console.error('Failed to update profile:', err);
-        alert('Profile update failed.');
+        this.toast.show('Profile update failed', 'error')
       }
     });
   }
 profilePictureUrl: string = '';
 
-// Add this method
+
 updateProfilePicture(): void {
   this.errorMessage = '';
   
   if (!this.profilePictureUrl?.trim()) {
+    this.toast.show('Please enter a valid UR', 'error')
     this.errorMessage = 'Please enter a valid URL';
     return;
   }
 
   if (!this.userData?.userId) {
+    this.toast.show('User not identified', 'error')
     this.errorMessage = 'User not identified';
     return;
   }
 
-  // Validate URL format
   try {
     new URL(this.profilePictureUrl);
   } catch (e) {
+     this.toast.show('Invalid URL', 'error')
     this.errorMessage = 'Please enter a valid URL (include http:// or https://)';
     return;
   }
@@ -136,6 +162,7 @@ updateProfilePicture(): void {
       },
       error: (err) => {
         this.errorMessage = 'Failed to update profile picture';
+         this.toast.show('Update', 'error')
         console.error('Update failed:', err);
       }
     });

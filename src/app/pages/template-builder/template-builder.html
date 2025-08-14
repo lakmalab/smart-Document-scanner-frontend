@@ -4,10 +4,10 @@
    
 <header class="builder-header">
     <div class="container-fluid">
-        <div class="row mb-4">
+        <div class="row mb-2">
             <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
-                <h1 class="mb-0 ">Template Builder</h1>
+                <h3 class="mb-0 ">Template Builder</h3>
                 <button class="btn btn-save" 
                       (click)="isEditMode ? updateTemplate() : saveTemplate()" 
                       [disabled]="isSaving">
@@ -23,9 +23,9 @@
         </div>
     </div>
 
-    <div class="row align-items-end g-3">
+    <div class="row align-items-start g-1">
          <!-- Image Upload -->
-      <div class="col-md-4 text-center align-middle">
+      <div class="col-md-2 text-center align-start">
   <div class="position-relative profile-picture-container">
     <div class="profile-image-wrapper" (click)="openImageUrlModal(imageUrlModal)">
       <img [src]="profilePicturePath || 'images/profiles.png'" 
@@ -66,7 +66,7 @@
   <div class="builder-main-content container-fluid">
     <div class="row">
       <!-- Components Panel -->
-      <aside class="components-panel col-md-3">
+      <aside class="components-panel col-md-2">
         <h5 class="components-title"><i class="bi bi-grid-3x3-gap me-2"></i>Form Components</h5>
         
         <div class="component-list">
@@ -83,7 +83,7 @@
       </aside>
 
       <!-- Form Canvas -->
-      <main class="form-canvas col-md-6" 
+      <main class="form-canvas col-md-7" 
             droppable 
             (dragover)="dragOver($event)" 
             (drop)="drop($event)">
