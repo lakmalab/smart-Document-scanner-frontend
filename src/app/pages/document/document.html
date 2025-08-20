@@ -1,14 +1,17 @@
 <div class="document-container">
-  <!-- Header Section -->
-  <header class="document-header">
-    <div class="container-fluid">
-      <div class="row align-items-center">
-        <div class="col-md-4">
-          <h1 class="mb-0">Document Processor</h1>
-        </div>
-      
-        <div class="col-md-2 ">
-          <div class="status-indicator">
+
+ 
+  <!-- Main Content -->
+  <div class="document-main-content container-fluid">
+    <div class="row gx-4 h-100"> <!-- Added h-100 here -->
+      <!-- Left: Dynamic Form Panel -->
+      <div class="col-lg-7 col-md-12 h-100">
+        <div class="form-panel h-100 d-flex flex-column">
+          
+          <div class="scan-controls">
+            <div class="input-group">
+                
+          <div class="status-indicator align-middle">
             <span class="badge" [ngClass]="{
               'bg-success': isMobileConnected,
               'bg-secondary': !isMobileConnected
@@ -17,30 +20,7 @@
               {{ isMobileConnected ? 'Mobile Connected' : 'Disconnected' }}
             </span>
           </div>
-        </div>
-
-          <div class="col-md-6 text-end">
-          <button class="btn btn-save" (click)="openExportModal()" [disabled]="isExporting">
-              <span *ngIf="!isExporting">
-                <i class="bi bi-folder me-2"></i>Export
-              </span>
-              <span *ngIf="isExporting">
-                <i class="bi bi-hourglass me-2"></i>Exporting...
-              </span>
-            </button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <div class="document-main-content container-fluid">
-    <div class="row gx-4 h-100"> <!-- Added h-100 here -->
-      <!-- Left: Dynamic Form Panel -->
-      <div class="col-lg-6 col-md-12 h-100">
-        <div class="form-panel h-100 d-flex flex-column">
-          <div class="scan-controls">
-            <div class="input-group">
+      
               <select class="form-select scan-select" [(ngModel)]="scanMethod">
                 <option value="">Select Input Method</option>
                 <option value="camera">Use Mobile Camera</option>
@@ -94,7 +74,7 @@
       </div>
 
       <!-- Right: Document List Panel -->
-      <div class="col-lg-6 col-md-12 h-100">
+      <div class="col-lg-5 col-md-12 h-100">
         <div class="documents-panel h-100 d-flex flex-column">
           <div class="documents-controls">
             <div class="search-container">
@@ -111,6 +91,16 @@
               <option value="Reviewed">Reviewed</option>
               <option value="Approved">Approved</option>
             </select>
+            
+          <button class="btn btn-save" (click)="openExportModal()" [disabled]="isExporting">
+              <span *ngIf="!isExporting">
+                <i class="bi bi-folder me-2"></i>Export
+              </span>
+              <span *ngIf="isExporting">
+                <i class="bi bi-hourglass me-2"></i>Exporting...
+              </span>
+            </button>
+        
           </div>
  <span class="text-muted small">{{ filteredDocs().length }} documents found</span>
        
