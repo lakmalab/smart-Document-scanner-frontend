@@ -3,10 +3,10 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-dynamicfield-component',
-  imports: [NgSwitchCase,NgSwitch],
+  imports: [NgSwitchCase, NgSwitch],
   templateUrl: './dynamicfield-component.html',
-  styleUrl: './dynamicfield-component.css'
+  styleUrl: './dynamicfield-component.css',
 })
 export class DynamicfieldComponent {
- @Input() config: any;
+  @Input() config: any;
 }

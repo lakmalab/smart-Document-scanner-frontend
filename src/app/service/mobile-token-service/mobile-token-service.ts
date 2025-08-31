@@ -3,8 +3,6 @@ import { Observable } from 'rxjs';
 import { MobileTokenSettings } from '../../model/mobile-token-settings.model';
 import { ApiService } from '../api-service/api-service';
 
-
-
 @Injectable({ providedIn: 'root' })
 export class MobileTokenService {
   private api = inject(ApiService);
@@ -14,13 +12,10 @@ export class MobileTokenService {
   }
 
   getQRCode(userId: number): Observable<string> {
-    return this.api.get<string>(
-      `mobile/users/${userId}/qr`,
-      undefined,
-      { responseType: 'text' as 'text' }
-    );
+    return this.api.get<string>(`mobile/users/${userId}/qr`, undefined, {
+      responseType: 'text' as 'text',
+    });
   }
-
 
   refreshToken(userId: number): Observable<any> {
     return this.api.post(`mobile/users/${userId}/refresh`, null);

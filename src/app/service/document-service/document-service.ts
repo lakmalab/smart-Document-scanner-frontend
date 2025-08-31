@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../api-service/api-service';
 import { Document2 } from '../../model/document.model';
 
-
 @Injectable({ providedIn: 'root' })
 export class DocumentService {
   private api = inject(ApiService);
@@ -16,7 +15,9 @@ export class DocumentService {
     return this.api.delete<void>(`api/documents/${docId}`);
   }
 
-  createDocument(fields: { fieldId: number; value: string }[]): Observable<any> {
+  createDocument(
+    fields: { fieldId: number; value: string }[]
+  ): Observable<any> {
     return this.api.post('api/documents', { extractedFields: fields });
   }
 
@@ -26,7 +27,7 @@ export class DocumentService {
   ): Observable<any> {
     return this.api.put(`api/documents/${documentId}`, {
       documentId,
-      extractedFields: fields
+      extractedFields: fields,
     });
   }
 }

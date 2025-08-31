@@ -23,8 +23,8 @@ export class TemplateBuilder implements OnInit {
   formImage: string | null = null;
   selectedItemIndex: number | null = null;
   isSaving: boolean = false;
- showUrlInput: boolean = false;
-errorMessage: string = '';
+  showUrlInput: boolean = false;
+  errorMessage: string = '';
   private router = inject(Router);
   private templateService = inject(TemplateService);
   components = [
@@ -44,12 +44,12 @@ errorMessage: string = '';
   profilePictureUrl: string = '';
   profilePicturePath: string = 'images/profiles.png';
 
- templateId: number | null = null;
+  templateId: number | null = null;
   isEditMode: boolean = false;
 
   constructor(
     private toast: CustomToastService,
-    private route: ActivatedRoute // Add this
+    private route: ActivatedRoute 
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +75,7 @@ errorMessage: string = '';
     });
   }
   private modalService = inject(NgbModal);
-private loadTemplate(templateId: number): void {
+  private loadTemplate(templateId: number): void {
   this.templateService.getTemplate(templateId).subscribe({
     next: (template) => {
 

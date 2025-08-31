@@ -6,6 +6,8 @@ import { DatePipe, NgIf } from '@angular/common';
 import { ApiKeyService } from '../../../service/apikey-service/apikey-service';
 import { User } from '../../../model/template.model';
 import { ApiKeySettings } from '../../../model/settings.model';
+import { CustomToastService } from '../../../service/toast/custom-toast.service';
+import { ModalService } from '../../../service/modal/modal-service';
 
 @Component({
   selector: 'app-api-settings',
@@ -27,6 +29,18 @@ export class ApiSettingsComponent implements OnInit {
     apiKey: '',
     expiryDate: null as string | null
   };
+  constructor(
+      private toast: CustomToastService,
+       private modalService: ModalService
+    ) {}
+     
+    resetForm() {
+      this.modalService.show(
+        'Confirm discard', 
+        'Are you sure you want to discard changes?',
+        () =>  this.loadApiKeySettings()
+      );
+    }
 
   ngOnInit(): void {
     this.userData = this.router.getCurrentNavigation()?.extras.state?.['user']
@@ -48,6 +62,7 @@ export class ApiSettingsComponent implements OnInit {
         };
       },
       error: (err) => {
+         this.toast.show('Error loading API settings.', 'error');
         console.error('Error loading API settings:', err);
       }
     });
@@ -68,22 +83,18 @@ export class ApiSettingsComponent implements OnInit {
     this.apiService.saveApiKey(this.userData.userId, payload).subscribe({
       next: () => {
         this.loading = false;
-        alert('API settings saved successfully!');
+        this.toast.show('API settings saved successfully!', 'success');
         this.router.navigate(['/home']);
       },
       error: (err) => {
         this.loading = false;
         console.error('Error saving API settings:', err);
-        alert('Failed to save API settings');
+        this.toast.show('Failed to save API settings.', 'error');
       }
     });
   }
 
-  resetForm(): void {
-    if (confirm('Are you sure you want to discard changes?')) {
-      this.loadApiKeySettings();
-    }
-  }
+  
 
   onCancel(): void {
     this.router.navigate(['/home']);

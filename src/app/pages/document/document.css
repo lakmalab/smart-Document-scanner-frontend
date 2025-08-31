@@ -22,7 +22,6 @@
   margin-right: 0.75rem;
 }
 
-
 .document-header h1 {
   font-weight: 600;
   margin: 0;
@@ -180,7 +179,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Documents panel */

@@ -1,45 +1,30 @@
 <div class="document-container">
-  <!-- Header Section -->
-  <header class="document-header">
-    <div class="container-fluid">
-      <div class="row align-items-center">
-        <div class="col-md-4">
-          <h1 class="mb-0">Document Processor</h1>
-        </div>
-        <div class="col-md-4 text-end">
-       <button class="btn btn-save" (click)="openExportModal()" [disabled]="isExporting">
-          <span *ngIf="!isExporting">
-            <i class="bi bi-folder me-2"></i>Export
-          </span>
-          <span *ngIf="isExporting">
-            <i class="bi bi-hourglass me-2"></i>Exporting...
-          </span>
-        </button>
-
-        </div>
-        <div class="col-md-4 text-end">
-          <div class="status-indicator">
-            <span class="badge" [ngClass]="{
-              'bg-success': isMobileConnected,
-              'bg-secondary': !isMobileConnected
-            }">
-              <i class="bi" [class.bi-phone]="isMobileConnected" [class.bi-phone-x]="!isMobileConnected"></i>
-              {{ isMobileConnected ? 'Mobile Connected' : 'Disconnected' }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
   <!-- Main Content -->
   <div class="document-main-content container-fluid">
-    <div class="row gx-4 h-100"> <!-- Added h-100 here -->
+    <div class="row gx-4 h-100">
+      <!-- Added h-100 here -->
       <!-- Left: Dynamic Form Panel -->
-      <div class="col-lg-6 col-md-12 h-100">
+      <div class="col-lg-7 col-md-12 h-100">
         <div class="form-panel h-100 d-flex flex-column">
           <div class="scan-controls">
             <div class="input-group">
+              <div class="status-indicator align-middle">
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'bg-success': isMobileConnected,
+                    'bg-secondary': !isMobileConnected
+                  }"
+                >
+                  <i
+                    class="bi"
+                    [class.bi-phone]="isMobileConnected"
+                    [class.bi-phone-x]="!isMobileConnected"
+                  ></i>
+                  {{ isMobileConnected ? "Mobile Connected" : "Disconnected" }}
+                </span>
+              </div>
+
               <select class="form-select scan-select" [(ngModel)]="scanMethod">
                 <option value="">Select Input Method</option>
                 <option value="camera">Use Mobile Camera</option>
@@ -54,12 +39,17 @@
           <div class="template-header">
             <h3>{{ templateName }}</h3>
             <div class="template-image" *ngIf="templateImage">
-              <img [src]="templateImage" alt="Template preview">
+              <img [src]="templateImage" alt="Template preview" />
             </div>
           </div>
 
-          <form *ngIf="fields.length > 0" (ngSubmit)="onSubmit()" class="document-form flex-grow-1 d-flex flex-column">
-            <div class="fields-container flex-grow-1"> <!-- New container for fields -->
+          <form
+            *ngIf="fields.length > 0"
+            (ngSubmit)="onSubmit()"
+            class="document-form flex-grow-1 d-flex flex-column"
+          >
+            <div class="fields-container flex-grow-1">
+              <!-- New container for fields -->
               <div class="form-field" *ngFor="let field of fields">
                 <label class="field-label">{{ field.fieldName }}</label>
                 <input
@@ -67,7 +57,8 @@
                   [(ngModel)]="field.value"
                   [name]="'field_' + field.fieldId"
                   class="form-control field-input"
-                  [placeholder]="'Enter ' + field.fieldName" />
+                  [placeholder]="'Enter ' + field.fieldName"
+                />
               </div>
             </div>
 
@@ -79,13 +70,20 @@
                   <i class="bi bi-check-circle"></i> Processed
                 </span>
               </button>
-              <button type="button" class="btn btn-secondary" (click)="saveDraft()">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="saveDraft()"
+              >
                 Save Draft
               </button>
             </div>
           </form>
 
-          <div class="empty-state flex-grow-1 d-flex flex-column justify-content-center" *ngIf="fields.length === 0">
+          <div
+            class="empty-state flex-grow-1 d-flex flex-column justify-content-center"
+            *ngIf="fields.length === 0"
+          >
             <i class="bi bi-file-earmark-excel"></i>
             <p>No document fields found for this template</p>
           </div>
@@ -93,7 +91,7 @@
       </div>
 
       <!-- Right: Document List Panel -->
-      <div class="col-lg-6 col-md-12 h-100">
+      <div class="col-lg-5 col-md-12 h-100">
         <div class="documents-panel h-100 d-flex flex-column">
           <div class="documents-controls">
             <div class="search-container">
@@ -102,7 +100,8 @@
                 type="text"
                 [(ngModel)]="searchQuery"
                 class="search-input"
-                placeholder="Search documents..." />
+                placeholder="Search documents..."
+              />
             </div>
             <select [(ngModel)]="selectedStatus" class="status-filter">
               <option value="">All Statuses</option>
@@ -110,18 +109,39 @@
               <option value="Reviewed">Reviewed</option>
               <option value="Approved">Approved</option>
             </select>
+
+            <button
+              class="btn btn-save"
+              (click)="openExportModal()"
+              [disabled]="isExporting"
+            >
+              <span *ngIf="!isExporting">
+                <i class="bi bi-folder me-2"></i>Export
+              </span>
+              <span *ngIf="isExporting">
+                <i class="bi bi-hourglass me-2"></i>Exporting...
+              </span>
+            </button>
           </div>
+          <span class="text-muted small"
+            >{{ filteredDocs().length }} documents found</span
+          >
 
-          <div class="documents-list flex-grow-1 overflow-auto"> <!-- Added overflow-auto -->
-           <app-document-card
-        *ngFor="let doc of filteredDocs(); let i = index"
-        [document]="doc"
-        (onEdit)="handleEdit(i)"
-        (onDelete)="handleDelete(i)"
-        (onApprove)="handleApprove(i)">
-      </app-document-card>
+          <div class="documents-list flex-grow-1 overflow-auto">
+            <!-- Added overflow-auto -->
+            <app-document-card
+              *ngFor="let doc of filteredDocs(); let i = index"
+              [document]="doc"
+              (onEdit)="handleEdit(i)"
+              (onDelete)="handleDelete(i)"
+              (onApprove)="handleApprove(i)"
+            >
+            </app-document-card>
 
-            <div class="empty-state d-flex flex-column justify-content-center h-100" *ngIf="filteredDocs().length === 0">
+            <div
+              class="empty-state d-flex flex-column justify-content-center h-100"
+              *ngIf="filteredDocs().length === 0"
+            >
               <i class="bi bi-folder2-open"></i>
               <p>No documents found matching your criteria</p>
             </div>
@@ -131,49 +151,63 @@
     </div>
   </div>
   <!-- Export Modal -->
-<div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exportModalLabel">Export Template</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-        <!-- Export Type -->
-        <div class="mb-3">
-          <label class="form-label">Export Type</label>
-          <select class="form-select" [(ngModel)]="exportType">
-            <option value="xlsx">Excel (.xlsx)</option>
-            <option value="accdb">Access (.accdb)</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Document Status</label>
-          <select class="form-select" [(ngModel)]="docStatus">
-            <option value="all">All</option>
-            <option value="pending">Pending </option>
-            <option value="reviewed">Reviewed </option>
-          </select>
+  <div
+    class="modal fade"
+    id="exportModal"
+    tabindex="-1"
+    aria-labelledby="exportModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exportModalLabel">Export Template</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
 
-        <!-- Date Range -->
-        <div class="mb-3">
-          <label class="form-label">Start Date</label>
-          <input type="date" class="form-control" [(ngModel)]="startDate">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">End Date</label>
-          <input type="date" class="form-control" [(ngModel)]="endDate">
-        </div>
-      </div>
+        <div class="modal-body">
+          <!-- Export Type -->
+          <div class="mb-3">
+            <label class="form-label">Export Type</label>
+            <select class="form-select" [(ngModel)]="exportType">
+              <option value="xlsx">Excel (.xlsx)</option>
+              <option value="accdb">Access (.accdb)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Document Status</label>
+            <select class="form-select" [(ngModel)]="docStatus">
+              <option value="all">All</option>
+              <option value="pending">Pending</option>
+              <option value="reviewed">Reviewed</option>
+            </select>
+          </div>
 
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary" (click)="confirmExport()">Export</button>
+          <!-- Date Range -->
+          <div class="mb-3">
+            <label class="form-label">Start Date</label>
+            <input type="date" class="form-control" [(ngModel)]="startDate" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">End Date</label>
+            <input type="date" class="form-control" [(ngModel)]="endDate" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button class="btn btn-primary" (click)="confirmExport()">
+            Export
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
 </div>

@@ -14,6 +14,7 @@ import { ModalService } from '../../service/modal/modal-service';
 })
 export class TemplateCardComponent {
     private modalService: ModalService = inject(ModalService);
+    lastUpdated: any;
   onDelete() {
     this.modalService.show(
       'Confirm Delete', 

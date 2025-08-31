@@ -303,7 +303,7 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -315,7 +315,7 @@
 
 .profile-image {
   border-radius: 8px;
-  border: 1px dashed ;
+  border: 1px dashed;
   border-spacing: 5px;
   object-fit: cover;
 }
