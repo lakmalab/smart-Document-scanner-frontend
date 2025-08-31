@@ -1,50 +1,61 @@
-<div class="card border-0 rounded-4 h-100 overflow-hidden transition-all hover-shadow-lg position-relative" style="box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-  
+<div
+  class="card border-0 rounded-4 h-100 overflow-hidden transition-all hover-shadow-lg position-relative"
+  style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
+>
   <!-- Image Container with padding -->
-  <div class="position-relative overflow-hidden" style="height: 200px; padding: 12px 12px 0 12px;">
+  <div
+    class="position-relative overflow-hidden"
+    style="height: 200px; padding: 12px 12px 0 12px"
+  >
     <div class="h-100 w-100 overflow-hidden rounded-3">
-      <img [src]="getImageUrl()" 
-           class="w-100 h-100 object-fit-cover" 
-           alt="Template Image">
+      <img
+        [src]="getImageUrl()"
+        class="w-100 h-100 object-fit-cover"
+        alt="Template Image"
+      />
     </div>
-    
-   <div class="floating-button">
-    <button  class="btn btn-sm btn-light rounded-circle shadow-sm p-2"
-            (click)="toggleDropdown()">
-      <i class="bi bi-three-dots"></i>
-    </button>
-    
-    <!-- Dropdown Menu -->
-    <div class="dropdown-content" >
-      <a class="dropdown-item" (click)="onEdit()">
-        <i class="bi bi-pencil me-2"></i>Edit
-      </a>
-      <a class="dropdown-item text-danger" 
-         (click)="onDelete()">
-        <i class="bi bi-trash me-2"></i>Delete
-      </a>
+
+    <div class="floating-button">
+      <button
+        class="btn btn-sm btn-light rounded-circle shadow-sm p-2"
+        (click)="toggleDropdown()"
+      >
+        <i class="bi bi-three-dots"></i>
+      </button>
+
+      <!-- Dropdown Menu -->
+      <div class="dropdown-content">
+        <a class="dropdown-item" (click)="onEdit()">
+          <i class="bi bi-pencil me-2"></i>Edit
+        </a>
+        <a class="dropdown-item text-danger" (click)="onDelete()">
+          <i class="bi bi-trash me-2"></i>Delete
+        </a>
+      </div>
     </div>
   </div>
 
-    
-  </div>
-  
   <!-- Card Body -->
   <div class="card-body p-4 d-flex flex-column">
     <!-- Title and Metadata -->
     <div class="mb-3">
       <h5 class="card-title fw-semibold mb-2">{{ template.template_name }}</h5>
       <div class="d-flex align-items-center text-muted small">
-        <span class="me-3"><i class="bi bi-grid-1x2 me-1"></i>{{ template.field_count }} Fields</span>
+        <span class="me-3"
+          ><i class="bi bi-grid-1x2 me-1"></i
+          >{{ template.field_count }} Fields</span
+        >
         <span><i class="bi bi-clock me-1"></i>Updated {{ lastUpdated }}</span>
       </div>
     </div>
-    
+
     <!-- Field Tags -->
     <div class="mb-4" *ngIf="template.fields?.length">
       <div class="d-flex flex-wrap gap-2">
-        <span *ngFor="let field of template.fields" 
-              class="badge bg-light text-dark border rounded-pill small px-3 py-1">
+        <span
+          *ngFor="let field of template.fields"
+          class="badge bg-light text-dark border rounded-pill small px-3 py-1"
+        >
           {{ field.fieldName }}
           <span *ngIf="field.required" class="text-danger ms-1">*</span>
         </span>
@@ -55,11 +66,13 @@
         <i class="bi bi-exclamation-circle me-1"></i>No fields defined
       </span>
     </div>
-    
+
     <!-- Action Button -->
     <div class="mt-auto">
-      <button class="btn btn-dark w-100 rounded-3 py-2 d-flex align-items-center justify-content-center" 
-              (click)="onUseTemplate()">
+      <button
+        class="btn btn-dark w-100 rounded-3 py-2 d-flex align-items-center justify-content-center"
+        (click)="onUseTemplate()"
+      >
         <i class="bi bi-magic me-2"></i>Use Template
       </button>
     </div>

@@ -2,9 +2,8 @@
 import { Injectable, ComponentRef, ViewContainerRef } from '@angular/core';
 import { CustomToastComponent } from '../../tools/CustomToastComponent/custom-toast-component/custom-toast-component';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomToastService {
   private rootViewContainer?: ViewContainerRef;
@@ -14,13 +13,28 @@ export class CustomToastService {
     this.rootViewContainer = viewContainerRef;
   }
 
-  show(message: string, type: 'info' | 'success' | 'warning' | 'error' | 'happy' | 'sad' | 'save' | 'delete' | 'confuse' = 'info', icon?: string, duration: number = 5000) {
+  show(
+    message: string,
+    type:
+      | 'info'
+      | 'success'
+      | 'warning'
+      | 'error'
+      | 'happy'
+      | 'sad'
+      | 'save'
+      | 'delete'
+      | 'confuse' = 'info',
+    icon?: string,
+    duration: number = 5000
+  ) {
     if (!this.rootViewContainer) {
       console.error('Root view container not set for CustomToastService');
       return;
     }
 
-    const componentRef = this.rootViewContainer.createComponent(CustomToastComponent);
+    const componentRef =
+      this.rootViewContainer.createComponent(CustomToastComponent);
     componentRef.instance.message = message;
     componentRef.instance.type = type;
     componentRef.instance.icon = icon || '';

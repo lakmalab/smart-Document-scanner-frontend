@@ -1,35 +1,61 @@
 <nav class="navbar navbar-expand-lg bg-dark shadow-sm px-4">
-  <div class="container-fluid d-flex align-items-center justify-content-between">
+  <div
+    class="container-fluid d-flex align-items-center justify-content-between"
+  >
     <!-- Logo and Brand -->
-    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-light" href="#">
+    <a
+      class="navbar-brand d-flex align-items-center gap-2 fw-bold text-light"
+      href="#"
+    >
       <img src="/images/scanner.ico" class="img-fluid" alt="Logo" height="30" />
       Smart Document Scanner
     </a>
 
-    <button *ngIf="isLoginPage()" 
-            class="btn btn-light rounded-pill px-3 bi bi-person"
-            (click)="goToAuthPage()">
-      {{ currentUrl === '/login' ? 'Sign Up' : 'Log In' }}
+    <button
+      *ngIf="isLoginPage()"
+      class="btn btn-light rounded-pill px-3 bi bi-person"
+      (click)="goToAuthPage()"
+    >
+      {{ currentUrl === "/login" ? "Sign Up" : "Log In" }}
     </button>
 
     <!-- Profile Dropdown (shown on all other pages) -->
     <div *ngIf="!isLoginPage()" class="dropdown" ngbDropdown>
-      <button class="btn btn-light rounded-pill d-flex align-items-center gap-2 px-3" 
-              ngbDropdownToggle id="profileDropdown">
-        <div class="d-none d-sm-flex flex-column align-items-start profile-name-role">
-          <span class="fw-semibold text-dark">{{ userData?.name || 'User' }}</span>
-          <small class="text-danger align-self-lg-end" style="font-size: 0.55rem;">
-            {{ userData?.role || 'Admin' }}
+      <button
+        class="btn btn-light rounded-pill d-flex align-items-center gap-2 px-3"
+        ngbDropdownToggle
+        id="profileDropdown"
+      >
+        <div
+          class="d-none d-sm-flex flex-column align-items-start profile-name-role"
+        >
+          <span class="fw-semibold text-dark">{{
+            userData?.name || "User"
+          }}</span>
+          <small
+            class="text-danger align-self-lg-end"
+            style="font-size: 0.55rem"
+          >
+            {{ userData?.role || "Admin" }}
           </small>
         </div>
-        <img [src]="userData?.profilePicturePath || 'images/profiles.png'" 
-             class="rounded-circle profile-image" 
-             width="30" height="30"
-             (error)="handleImageError($event)">
+        <img
+          [src]="userData?.profilePicturePath || 'images/profiles.png'"
+          class="rounded-circle profile-image"
+          width="30"
+          height="30"
+          (error)="handleImageError($event)"
+        />
       </button>
-      
-      <div class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" ngbDropdownMenu>
-        <h6 class="dropdown-header text-dark">{{ userData?.email || 'Admin' }}</h6>
+
+      <div
+        class="dropdown-menu dropdown-menu-end"
+        aria-labelledby="profileDropdown"
+        ngbDropdownMenu
+      >
+        <h6 class="dropdown-header text-dark">
+          {{ userData?.email || "Admin" }}
+        </h6>
         <div class="dropdown-divider"></div>
         <button class="dropdown-item" (click)="goToProfile()">
           <i class="bi bi-person me-2"></i> Profile

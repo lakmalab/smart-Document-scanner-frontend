@@ -3,28 +3,39 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environment/environment';
 
-
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
 
-  get<T>(endpoint: string, params?: HttpParams, options?: {
-    headers?: HttpHeaders,
-    observe?: 'body',
-    responseType?: 'json'
-  }): Observable<T>;
+  get<T>(
+    endpoint: string,
+    params?: HttpParams,
+    options?: {
+      headers?: HttpHeaders;
+      observe?: 'body';
+      responseType?: 'json';
+    }
+  ): Observable<T>;
 
-  get<T>(endpoint: string, params: HttpParams | undefined, options: {
-    headers?: HttpHeaders,
-    observe?: 'body',
-    responseType: 'text'
-  }): Observable<string>;
+  get<T>(
+    endpoint: string,
+    params: HttpParams | undefined,
+    options: {
+      headers?: HttpHeaders;
+      observe?: 'body';
+      responseType: 'text';
+    }
+  ): Observable<string>;
 
-  get<T>(endpoint: string, params?: HttpParams, options: any = {}): Observable<any> {
+  get<T>(
+    endpoint: string,
+    params?: HttpParams,
+    options: any = {}
+  ): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${endpoint}`, {
       params,
-      ...options
+      ...options,
     });
   }
 
@@ -43,11 +54,10 @@ export class ApiService {
   getRaw(endpoint: string, options?: any): Observable<any> {
     return this.http.get(`${this.baseUrl}/${endpoint}`, options);
   }
-  
+
   postBlob(endpoint: string, body: any = null): Observable<Blob> {
     return this.http.post(`${this.baseUrl}/${endpoint}`, body, {
-      responseType: 'blob'
+      responseType: 'blob',
     });
   }
-
 }

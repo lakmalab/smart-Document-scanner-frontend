@@ -13,24 +13,24 @@ interface ModalState {
   selector: 'app-modal-component',
   imports: [NgIf],
   templateUrl: './modal-component.html',
-  styleUrls: ['./modal-component.css']
+  styleUrls: ['./modal-component.css'],
 })
 export class ModalComponent {
   modalState: ModalState = {
     show: false,
     title: '',
     message: '',
-    onConfirm: () => {} // Default empty function
+    onConfirm: () => {}, // Default empty function
   };
 
   constructor(public modalService: ModalService) {
-    this.modalService.modalState$.subscribe(state => {
+    this.modalService.modalState$.subscribe((state) => {
       // Provide default values for optional properties
       this.modalState = {
         show: state.show,
         title: state.title || '',
         message: state.message || '',
-        onConfirm: state.onConfirm || (() => {})
+        onConfirm: state.onConfirm || (() => {}),
       };
     });
   }

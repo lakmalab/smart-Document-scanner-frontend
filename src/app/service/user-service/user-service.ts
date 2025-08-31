@@ -5,18 +5,20 @@ import { ApiService } from '../api-service/api-service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
- updateProfilePictureUrl(userId: number, url: string): Observable<User> {
-    return this.api.post<User>(
-      `auth/users/${userId}/profile-picture`,
-      { url } ).pipe(
-      map(user => {
-        // Decode the URL when received from server
-        if (user.profilePicturePath) {
-          user.profilePicturePath = decodeURIComponent(user.profilePicturePath);
-        }
-        return user;
-      })
-    );
+  updateProfilePictureUrl(userId: number, url: string): Observable<User> {
+    return this.api
+      .post<User>(`auth/users/${userId}/profile-picture`, { url })
+      .pipe(
+        map((user) => {
+          // Decode the URL when received from server
+          if (user.profilePicturePath) {
+            user.profilePicturePath = decodeURIComponent(
+              user.profilePicturePath
+            );
+          }
+          return user;
+        })
+      );
   }
 
   private api = inject(ApiService);
@@ -25,7 +27,7 @@ export class UserService {
     return this.api.put<User>(`auth/users/${userId}`, updatedUser);
   }
   updatePassword(userId: number, updatedUser: Partial<User>): Observable<User> {
-     return this.api.put<User>(`auth/userspass/${userId}`, updatedUser);
+    return this.api.put<User>(`auth/userspass/${userId}`, updatedUser);
   }
   getUser(userId: number): Observable<User> {
     return this.api.get<User>(`auth/users/${userId}`);
@@ -34,6 +36,4 @@ export class UserService {
   getCurrentUserFromStorage(): User | null {
     return JSON.parse(localStorage.getItem('user') || 'null');
   }
- 
- 
 }
