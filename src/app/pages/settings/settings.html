@@ -1,33 +1,80 @@
-<div class="d-flex min-vh-100">
+<div class="flex min-h-screen bg-gray-100">
   <!-- Sidebar -->
-  <div class="settings-sidebar bg-light border-end p-3" style="width: 250px;">
-    <h5 class="text-capitalize fw-bold mb-4">Settings</h5>
-    <ul class="nav flex-column">
-      <li class="nav-item">
-        <a routerLink="edit-profile" routerLinkActive="active" class="nav-link">
-          <i class="bi bi-pencil"></i> Edit Profile
-        </a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="mobile" routerLinkActive="active" class="nav-link">
-          <i class="bi bi-phone"></i> Mobile Pairing
-        </a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="api" routerLinkActive="active" class="nav-link">
-          <i class="bi bi-lock"></i> API
-        </a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="help" routerLinkActive="active" class="nav-link">
-          <i class="bi bi-question-circle"></i> Help
-        </a>
-      </li>
-    </ul>
-  </div>
+  <aside class="w-72 bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 flex flex-col p-6 shadow-lg [a]:no-underline">
+
+    <!-- Profile Section -->
+    <div class="flex items-center space-x-3 mb-10">
+      <img
+        [src]="userData?.profilePicturePath || 'images/profiles.png'"
+        (error)="handleImageError($event)"
+        alt="Profile"
+        class="w-14 h-14 rounded-full ring-2 ring-gray-700"
+      />
+      <div>
+        <h6 class="text-base font-semibold">{{ userData?.name || 'Lakmal Abeyrathne' }}</h6>
+        <a
+         
+          class="text-xs text-danger hover:text-white transition"
+          ><i class="bi bi-lock"></i> Log Out</a
+        >
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1">
+      <h2 class="text-sm uppercase text-gray-400 tracking-wider mb-4">
+        Settings
+      </h2>
+      <ul class="space-y-2">
+  <li>
+    <a
+      routerLink="edit-profile"
+      routerLinkActive="bg-gray-700 text-white"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
+    >
+      <i class="bi bi-pencil"></i>
+      <span>Edit Profile</span>
+    </a>
+  </li>
+  <li>
+    <a
+      routerLink="mobile"
+      routerLinkActive="bg-gray-700 text-white"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
+    >
+      <i class="bi bi-phone"></i>
+      <span>Mobile Pairing</span>
+    </a>
+  </li>
+  <li>
+    <a
+      routerLink="api"
+      routerLinkActive="bg-gray-700 text-white"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
+    >
+      <i class="bi bi-lock"></i>
+      <span>API</span>
+    </a>
+  </li>
+  <li>
+    <a
+      routerLink="help"
+      routerLinkActive="bg-gray-700 text-white"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
+    >
+      <i class="bi bi-question-circle"></i>
+      <span>Help</span>
+    </a>
+  </li>
+</ul>
+
+    </nav>
+  </aside>
 
   <!-- Main Content -->
-  <div class="flex-fill p-4">
-    <router-outlet></router-outlet>
-  </div>
+  <main class="flex-1 p-10">
+    <div class="bg-white shadow-xl rounded-2xl p-8 min-h-[80vh]">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
 </div>

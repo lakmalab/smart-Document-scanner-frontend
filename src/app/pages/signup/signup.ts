@@ -23,6 +23,9 @@ export class SignupComponent {
   errorMessage = '';
   successMessage = '';
   private toast: CustomToastService = inject(CustomToastService);
+termsAccepted: any;
+lastName: any;
+firstName: any;
 
   onRegister(): void {
     const request: RegisterRequest = {

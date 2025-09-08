@@ -26,6 +26,7 @@ endDate: string = '';
 docStatus: string = 'reviewed'; 
 dateRange: any;
 sortField: any;
+showExportModal:  boolean = false;
 
 saveDraft() {
 throw new Error('Method not implemented.');
@@ -139,6 +140,7 @@ handleEdit(index: number): void {
 
 
 openExportModal(): void {
+  this.showExportModal = true
   const modal = new (window as any).bootstrap.Modal(document.getElementById('exportModal'));
   modal.show();
 }
