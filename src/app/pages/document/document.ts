@@ -69,7 +69,7 @@ throw new Error('Method not implemented.');
     const templateId = Number(this.route.snapshot.paramMap.get('templateId'));
     this.tempService.getTemplate(templateId).subscribe({
       next: (template: Template) => {
-        this.templateName = template.template_name || 'Document Form';
+        this.templateName = template.templateName || 'Document Form';
         this.fields = template.fields.map(fields => ({
           fieldId: fields.fieldId,
           fieldName: fields.fieldName,

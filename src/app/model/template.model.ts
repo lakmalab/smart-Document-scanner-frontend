@@ -19,7 +19,7 @@ export interface Document2 {
 
 export interface Template {
   templateId: number;
-  template_name: string;
+  templateName: string;
   templateImagePath?: string;
   field_count: number;
   image_url: string;

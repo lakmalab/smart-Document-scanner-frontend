@@ -1,109 +1,200 @@
-
-<h3 class="fw-bold mb-4">Mobile Token Settings</h3>
-<div class="row">
-  <div class="col-md-8">
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Mobile Token Settings</h3>
     
-<form #apiSettingsForm="ngForm">
-  <div class="mb-3">
-     <div class="col-md-8"></div>
-    <label class="form-label">Scan QR Code</label><br />
-  
-  </div>
-<div class="row">
-  <!-- Left Column - QR Code -->
-  <div class="col-md-6 mb-3">
-    <div class="d-flex justify-content-center">
-      <!-- Your QR Code Component Here -->
-     <img *ngIf="qrCode" [src]="qrCode" alt="QR Code" style="width: 200px; height: 200px; border: 1px solid #ccc;" />
-    </div>
-  </div>
-
-  <!-- Right Column - Connection Status and Button -->
-  <div class="col-md-6 mb-3">
-    <div class="d-flex flex-column h-0 ">
-      <!-- Connection Status -->
-      
-      </div>
-    <div class="d-flex flex-column h-20 justify-content-between">
-      <!-- Connection Status -->
-      <div>
-        <span class="badge" [ngClass]="settings.used ? 'bg-success' : 'bg-warning'">
-          {{ settings.used ? 'Connected' : 'Not Connected' }}
-        </span>
-      </div>
-      
-      <!-- Refresh Token Button -->
-      <div class="mt-auto">
-        <button type="button" class="btn btn-outline-danger" (click)="refreshToken()">
-          Refresh Token
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-  <div class="mb-3">
-    <label class="form-label">Token Key</label>
-    <div class="input-group">
-      <input
-        class="form-control"
-        name="apiKey"
-        [(ngModel)]="settings.token"
-        placeholder="Enter your API key"
-        required
-      />
-    </div>
-    <div class="form-text">Keep your token secure</div>
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Expiry Date</label>
-    <input
-      type="date"
-      class="form-control"
-      [(ngModel)]="settings.expiresAt"
-      name="expiryDate"
-      [min]="minDate | date:'yyyy-MM-dd'"
-    />
-    <div class="form-text">Leave empty for no expiration</div>
-  </div>
-
-  <div class="d-flex gap-2 mt-4">
-    <button class="btn btn-outline-danger" type="button">Cancel</button>
-    <button class="btn btn-primary" type="submit" [disabled]="!apiSettingsForm.valid">
-      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-      Save Settings
-    </button>
-  </div>
-</form>
-</div>
-<div class="col-md-4 text-center">
-
-<div class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-    <!-- Banner Image -->
-    <div class="mb-6 overflow-hidden rounded-lg">
-        <img 
-            src="images/android.png" 
-            alt="App Banner"
-            class="w-full h-auto object-cover"
-        >
-    </div>
-    
-    <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Scan from anywhere</h5>
-    <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">Stay up to date and move work forward with our app on Android. Download the app today.</p>
-    
-      <div class="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
-        <!-- GitHub Download Button -->
-        <a href="https://github.com/lakmalab/Smart-Document-Scanner-Android-Companion-" 
-           class="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
-            <svg class="me-3 w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"/>
-            </svg>
-            <div class="text-left rtl:text-right">
-                <div class="mb-1 text-xs">Get it on</div>
-                <div class="-mt-1 font-sans text-sm font-semibold">GitHub</div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Main Settings Form -->
+      <div class="lg:col-span-2">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+          <form #apiSettingsForm="ngForm">
+            <!-- QR Code Section -->
+            <div class="mb-8">
+              <label class="block text-sm font-semibold mb-4">
+                Scan QR Code
+              </label>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- QR Code Display -->
+                <div class="flex justify-center items-center">
+                  <div class="bg-white dark:bg-gray-100 p-4 rounded-lg shadow-inner border-2 border-dashed border-gray-300 dark:border-gray-600">
+                    <img 
+                      *ngIf="qrCode" 
+                      [src]="qrCode" 
+                      alt="QR Code" 
+                      class="w-48 h-48 object-contain"
+                    />
+                    <div 
+                      *ngIf="!qrCode" 
+                      class="w-48 h-48 flex items-center justify-center bg-gray-100 dark:bg-gray-200 rounded-lg"
+                    >
+                      <span class="text-gray-500 text-sm">QR Code will appear here</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Status and Controls -->
+                <div class="flex flex-col justify-between space-y-4">
+                  <!-- Connection Status -->
+                  <div class="space-y-3">
+                    <div class="flex items-center space-x-2">
+                      <div class="w-3 h-3 rounded-full" 
+                           [ngClass]="settings.used ? 'bg-green-500 animate-pulse' : 'bg-yellow-500'">
+                      </div>
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                            [ngClass]="settings.used ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'">
+                        {{ settings.used ? 'Connected' : 'Not Connected' }}
+                      </span>
+                    </div>
+                    
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                      {{ settings.used ? 'Your device is successfully connected' : 'Waiting for device connection' }}
+                    </p>
+                  </div>
+                  
+                  <!-- Refresh Button -->
+                  <button 
+                    type="button" 
+                    class="inline-flex items-center justify-center px-4 py-2 border border-red-300 dark:border-red-600 text-sm font-medium rounded-lg text-red-700 dark:text-red-400 bg-white dark:bg-gray-800 hover:bg-red-50 dark:hover:bg-red-900/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
+                    (click)="refreshToken()"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    Refresh Token
+                  </button>
+                </div>
+              </div>
             </div>
-        </a>
-    </div>
-</div>
 
+            <!-- Token Key Field -->
+            <div class="mb-6">
+              <label class="block text-sm font-semibold mb-2">
+                Token Key
+              </label>
+              <div class="relative">
+                <input
+                  class="block w-full px-4 py-3 text-gray-900  bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                  name="apiKey"
+                  [(ngModel)]="settings.token"
+                  placeholder="Enter your API key"
+                  required
+                />
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m0 0a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2v-6a2 2 0 012-2m0 0V7a2 2 0 012-2h6z"></path>
+                  </svg>
+                </div>
+              </div>
+              <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 flex items-center">
+                <svg class="w-4 h-4 mr-1 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                </svg>
+                Keep your token secure and never share it publicly
+              </p>
+            </div>
+
+            <!-- Expiry Date Field -->
+            <div class="mb-8">
+              <label class="block text-sm font-semibold text-gray-700  mb-2">
+                Expiry Date
+              </label>
+              <input
+                type="date"
+                class="block w-full px-4 py-3 text-gray-900  bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                [(ngModel)]="settings.expiresAt"
+                name="expiryDate"
+                [min]="minDate | date:'yyyy-MM-dd'"
+              />
+              <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Leave empty for no expiration
+              </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <button 
+                class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700  bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200" 
+                type="button"
+              >
+                Cancel
+              </button>
+              <button 
+                class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200" 
+                type="submit" 
+                [disabled]="!apiSettingsForm.valid"
+              >
+                <span *ngIf="loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white">
+                  <svg fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </span>
+                Save Settings
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- App Download Card -->
+      <div class="lg:col-span-1">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 text-center sticky top-6">
+          <!-- Banner Image -->
+          <div class="mb-6 overflow-hidden rounded-lg bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-700 dark:to-gray-600 p-4">
+            <img 
+              src="images/android.png" 
+              alt="Android App"
+              class="w-full h-32 object-contain mx-auto"
+            >
+          </div>
+          
+          <h5 class="mb-3 text-xl font-bold text-gray-900 dark:text-white">
+            Scan from anywhere
+          </h5>
+          <p class="mb-6 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+            Stay up to date and move work forward with our mobile app. Download the companion app today.
+          </p>
+          
+          <!-- Download Button -->
+          <a 
+            href="https://github.com/lakmalab/Smart-Document-Scanner-Android-Companion-" 
+            class="inline-flex items-center justify-center w-full px-4 py-3 bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          >
+            <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"/>
+            </svg>
+            <div class="text-left">
+              <div class="text-xs opacity-75">Get it on</div>
+              <div class="text-sm font-semibold -mt-1">GitHub</div>
+            </div>
+          </a>
+          
+          <!-- Features List -->
+          <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div class="space-y-2 text-left">
+              <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                Real-time QR scanning
+              </div>
+              <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                Secure token management
+              </div>
+              <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                Cross-platform sync
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
