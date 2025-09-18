@@ -4,14 +4,14 @@ import { NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { TemplateService } from '../../service/template-service/template-service';
 import { Template, User } from '../../model/template.model';
-
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
   standalone: true,
-  imports: [TemplateCardComponent, NgFor]
+  imports: [TemplateCardComponent, NgFor,ButtonModule]
 })
 export class HomeComponent implements OnInit {
   private router = inject(Router);
