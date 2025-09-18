@@ -44,7 +44,7 @@ export class TemplateService {
       map((templates) =>
         templates.map((template) => ({
           templateId: template.templateId,
-          template_name: template.templateName,
+          templateName: template.templateName,
           field_count: template.fields.length,
           image_url:
             template.templateImagePath ||

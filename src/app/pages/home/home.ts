@@ -57,4 +57,8 @@ export class HomeComponent implements OnInit {
      this.router.navigate(['/template-builder']);
 
   }
+  navigateToProfile(): void {
+     this.router.navigate(['/settings/edit-profile']);
+
+  }
 }

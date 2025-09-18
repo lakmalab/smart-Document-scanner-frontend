@@ -26,6 +26,7 @@ endDate: string = '';
 docStatus: string = 'reviewed'; 
 dateRange: any;
 sortField: any;
+showExportModal:  boolean = false;
 
 saveDraft() {
 throw new Error('Method not implemented.');
@@ -68,7 +69,7 @@ throw new Error('Method not implemented.');
     const templateId = Number(this.route.snapshot.paramMap.get('templateId'));
     this.tempService.getTemplate(templateId).subscribe({
       next: (template: Template) => {
-        this.templateName = template.template_name || 'Document Form';
+        this.templateName = template.templateName || 'Document Form';
         this.fields = template.fields.map(fields => ({
           fieldId: fields.fieldId,
           fieldName: fields.fieldName,
@@ -139,6 +140,7 @@ handleEdit(index: number): void {
 
 
 openExportModal(): void {
+  this.showExportModal = true
   const modal = new (window as any).bootstrap.Modal(document.getElementById('exportModal'));
   modal.show();
 }

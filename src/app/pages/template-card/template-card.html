@@ -1,79 +1,88 @@
 <div
-  class="card border-0 rounded-4 h-100 overflow-hidden transition-all hover-shadow-lg position-relative"
-  style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)"
+  class="bg-gray-800 rounded-2xl overflow-hidden  hover:shadow-2xl transition-all h-full flex flex-col"
 >
-  <!-- Image Container with padding -->
-  <div
-    class="position-relative overflow-hidden"
-    style="height: 200px; padding: 12px 12px 0 12px"
-  >
-    <div class="h-100 w-100 overflow-hidden rounded-3">
-      <img
-        [src]="getImageUrl()"
-        class="w-100 h-100 object-fit-cover"
-        alt="Template Image"
-      />
-    </div>
+  <!-- Image Container -->
+  <div class="relative h-48 p-3">
+    <img
+      [src]="getImageUrl()"
+      alt="Template Image"
+      class="w-full h-full object-cover rounded-xl"
+    />
 
-    <div class="floating-button">
+    <!-- Floating Button -->
+    <div class="absolute top-3 right-3">
       <button
-        class="btn btn-sm btn-light rounded-circle shadow-sm p-2"
         (click)="toggleDropdown()"
+        class="bg-gray-800 text-gray-200 hover:bg-gray-700 p-2 rounded-circle shadow-md focus:outline-none"
       >
         <i class="bi bi-three-dots"></i>
       </button>
 
       <!-- Dropdown Menu -->
-      <div class="dropdown-content">
-        <a class="dropdown-item" (click)="onEdit()">
-          <i class="bi bi-pencil me-2"></i>Edit
+      <div
+        class="absolute right-0 mt-2 w-36 bg-gray-800 text-gray-200 rounded-lg shadow-lg overflow-hidden z-10"
+        [class.hidden]="!isDropdownOpen"
+      >
+        <a
+          class="dropdown-item text-info gap-2  "
+          (click)="onEdit()"
+        >
+          <i class="bi bi-pencil"></i> Edit
         </a>
-        <a class="dropdown-item text-danger" (click)="onDelete()">
-          <i class="bi bi-trash me-2"></i>Delete
+
+          <a
+        class="dropdown-item text-danger gap-2 hover:bg-danger cursor-pointer "
+          (click)="onDelete()"
+        >
+        
+          <i class="bi bi-trash"></i> Delete
         </a>
       </div>
     </div>
   </div>
 
   <!-- Card Body -->
-  <div class="card-body p-4 d-flex flex-column">
+  <div class="flex-1 p-4 flex flex-col">
     <!-- Title and Metadata -->
     <div class="mb-3">
-      <h5 class="card-title fw-semibold mb-2">{{ template.template_name }}</h5>
-      <div class="d-flex align-items-center text-muted small">
-        <span class="me-3"
-          ><i class="bi bi-grid-1x2 me-1"></i
-          >{{ template.field_count }} Fields</span
-        >
-        <span><i class="bi bi-clock me-1"></i>Updated {{ lastUpdated }}</span>
+      <h5 class="text-white font-semibold text-lg mb-1">
+        {{ template.template_name }}
+      </h5>
+      <div class="flex items-center text-gray-400 text-sm gap-4">
+        <span class="flex items-center gap-1">
+          <i class="bi bi-grid-1x2"></i> {{ template.field_count }} Fields
+        </span>
+        <span class="flex items-center gap-1">
+          <i class="bi bi-clock"></i> Updated {{ lastUpdated }}
+        </span>
       </div>
     </div>
 
     <!-- Field Tags -->
-    <div class="mb-4" *ngIf="template.fields?.length">
-      <div class="d-flex flex-wrap gap-2">
+    <div class="mb-4">
+      <div *ngIf="template.fields?.length; else noFields" class="flex flex-wrap gap-2">
         <span
           *ngFor="let field of template.fields"
-          class="badge bg-light text-dark border rounded-pill small px-3 py-1"
+          class="bg-gray-800 text-gray-200 border border-gray-700 rounded-full px-3 py-1 text-sm flex items-center gap-1"
         >
           {{ field.fieldName }}
-          <span *ngIf="field.required" class="text-danger ms-1">*</span>
+          <span *ngIf="field.required" class="text-red-500">*</span>
         </span>
       </div>
-    </div>
-    <div *ngIf="!template.fields?.length" class="mb-4">
-      <span class="badge bg-light text-muted rounded-pill small px-3 py-1">
-        <i class="bi bi-exclamation-circle me-1"></i>No fields defined
-      </span>
+      <ng-template #noFields>
+        <span class="bg-gray-800 text-gray-500 rounded-full px-3 py-1 text-sm flex items-center gap-1">
+          <i class="bi bi-exclamation-circle"></i> No fields defined
+        </span>
+      </ng-template>
     </div>
 
     <!-- Action Button -->
     <div class="mt-auto">
-      <button
-        class="btn btn-dark w-100 rounded-3 py-2 d-flex align-items-center justify-content-center"
+       <button
         (click)="onUseTemplate()"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-3 flex items-center justify-center gap-2 transition-colors"
       >
-        <i class="bi bi-magic me-2"></i>Use Template
+        <i class="bi bi-magic"></i> Use Template
       </button>
     </div>
   </div>

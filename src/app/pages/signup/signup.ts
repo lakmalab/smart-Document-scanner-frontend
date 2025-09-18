@@ -9,37 +9,45 @@ import { CustomToastService } from '../../service/toast/custom-toast.service';
 
 @Component({
   selector: 'app-signup',
-  imports: [FormsModule,HttpClientModule,NgIf],
+  imports: [FormsModule, HttpClientModule, NgIf],
   templateUrl: './signup.html',
-  styleUrl: './signup.css'
+  styleUrl: './signup.css',
 })
 export class SignupComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  name = '';
+  lastName= '';
+  firstName= '';
+  name = this.firstName + this.lastName;
   email = '';
   password = '';
   errorMessage = '';
   successMessage = '';
   private toast: CustomToastService = inject(CustomToastService);
+  termsAccepted: any;
+  
 
   onRegister(): void {
     const request: RegisterRequest = {
-      name: this.name,
+      name: this.firstName +" "+ this.lastName,
       email: this.email,
-      password: this.password
+      password: this.password,
     };
 
     this.authService.register(request).subscribe({
       next: () => {
-         this.toast.show( 'Registration successful!', 'happy', 'bi-star-fill');
-    
+        this.toast.show('Registration successful!', 'happy', 'bi-star-fill');
+
         this.router.navigate(['/login']);
       },
       error: () => {
-          this.toast.show('Registration failed. Try again', 'error', 'bi-star-fill');
-      }
+        this.toast.show(
+          'Registration failed. Try again',
+          'error',
+          'bi-star-fill'
+        );
+      },
     });
   }
 }

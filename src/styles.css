@@ -9,3 +9,7 @@ body {
   font-size: 0.875rem; /* 14px if root is 16px, or scales with html */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+
+.min-height-custom {
+    min-height: calc(100vh - 64px);
+}

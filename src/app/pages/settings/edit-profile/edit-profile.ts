@@ -10,62 +10,56 @@ import { CustomToastService } from '../../../service/toast/custom-toast.service'
 
 @Component({
   selector: 'app-edit-profile',
-  imports: [NgIf,FormsModule, HttpClientModule],
+  imports: [NgIf, FormsModule, HttpClientModule],
   templateUrl: './edit-profile.html',
-  styleUrl: './edit-profile.css'
+  styleUrl: './edit-profile.css',
 })
-
 export class EditProfileComponent implements OnInit {
-  constructor(
-      private toast: CustomToastService
-    ) {}
+  constructor(private toast: CustomToastService) {}
   showUrlInput: boolean = false;
   errorMessage: string = '';
   handleImageError($event: ErrorEvent) {
-  throw new Error('Method not implemented.');
+    throw new Error('Method not implemented.');
   }
 
- toggleUrlInput() {
+  toggleUrlInput() {
     this.showUrlInput = !this.showUrlInput;
     console.log('Input visibility toggled to:', this.showUrlInput); // Debug
   }
   onPasswordChange() {
     this.modalService.show(
-        'Confirm Save', 
-        'Are you sure you want to save changes?',
-        () =>  {
-
- if (!this.userData?.userId) {
-      console.error('User ID missing');
-      return;
-    }
-
-    const updatedUser: Partial<User> = {
-      name: `${this.profile.firstName} ${this.profile.lastName}`,
-      email: this.profile.email,
-      password: this.profile.password,
-    };
-
-    this.userService.updatePassword(this.userData.userId, updatedUser).subscribe({
-      next: (updated) => {
-        localStorage.setItem('user', JSON.stringify(updated));
-         this.toast.show('Profile updated successfully!', 'success');
-      
-      },
-      error: (err) => {
-        console.error('Failed to update profile:', err);
-         this.toast.show('Profile update failed', 'error')
-     
-      }
-    });
-
+      'Confirm Save',
+      'Are you sure you want to save changes?',
+      () => {
+        if (!this.userData?.userId) {
+          console.error('User ID missing');
+          return;
         }
-      );
-    
-}
+
+        const updatedUser: Partial<User> = {
+          name: `${this.profile.firstName} ${this.profile.lastName}`,
+          email: this.profile.email,
+          password: this.profile.password,
+        };
+
+        this.userService
+          .updatePassword(this.userData.userId, updatedUser)
+          .subscribe({
+            next: (updated) => {
+              localStorage.setItem('user', JSON.stringify(updated));
+              this.toast.show('Profile updated successfully!', 'success');
+            },
+            error: (err) => {
+              console.error('Failed to update profile:', err);
+              this.toast.show('Profile update failed', 'error');
+            },
+          });
+      }
+    );
+  }
   private router = inject(Router);
   private userService = inject(UserService);
-   private modalService: ModalService = inject(ModalService);
+  private modalService: ModalService = inject(ModalService);
   userData: User | null = null;
 
   profile = {
@@ -76,12 +70,13 @@ export class EditProfileComponent implements OnInit {
     contact: '',
     city: '',
     province: '',
-    password: ''
+    password: '',
   };
 
   ngOnInit(): void {
-    this.userData = this.router.getCurrentNavigation()?.extras.state?.['user']
-                 || JSON.parse(localStorage.getItem('user') || 'null');
+    this.userData =
+      this.router.getCurrentNavigation()?.extras.state?.['user'] ||
+      JSON.parse(localStorage.getItem('user') || 'null');
 
     if (this.userData) {
       const nameParts = this.userData.name.split(' ');
@@ -96,11 +91,11 @@ export class EditProfileComponent implements OnInit {
     }
   }
   save() {
-      this.modalService.show(
-        'Confirm Save', 
-        'Are you sure you want to save changes?',
-        () =>  this.onSave()
-      );
+    this.modalService.show(
+      'Confirm Save',
+      'Are you sure you want to save changes?',
+      () => this.onSave()
+    );
   }
   onSave(): void {
     if (!this.userData?.userId) {
@@ -114,7 +109,7 @@ export class EditProfileComponent implements OnInit {
       address: this.profile.address,
       contactNumber: this.profile.contact,
       city: this.profile.city,
-      province: this.profile.province
+      province: this.profile.province,
     };
 
     this.userService.updateUser(this.userData.userId, updatedUser).subscribe({
@@ -124,49 +119,50 @@ export class EditProfileComponent implements OnInit {
       },
       error: (err) => {
         console.error('Failed to update profile:', err);
-        this.toast.show('Profile update failed', 'error')
-      }
-    });
-  }
-profilePictureUrl: string = '';
-
-
-updateProfilePicture(): void {
-  this.errorMessage = '';
-  
-  if (!this.profilePictureUrl?.trim()) {
-    this.toast.show('Please enter a valid UR', 'error')
-    this.errorMessage = 'Please enter a valid URL';
-    return;
-  }
-
-  if (!this.userData?.userId) {
-    this.toast.show('User not identified', 'error')
-    this.errorMessage = 'User not identified';
-    return;
-  }
-
-  try {
-    new URL(this.profilePictureUrl);
-  } catch (e) {
-     this.toast.show('Invalid URL', 'error')
-    this.errorMessage = 'Please enter a valid URL (include http:// or https://)';
-    return;
-  }
-
-  this.userService.updateProfilePictureUrl(this.userData.userId, this.profilePictureUrl)
-    .subscribe({
-      next: (updatedUser) => {
-        this.userData = updatedUser;
-        localStorage.setItem('user', JSON.stringify(updatedUser));
+        this.toast.show('Profile update failed', 'error');
       },
-      error: (err) => {
-        this.errorMessage = 'Failed to update profile picture';
-         this.toast.show('Update', 'error')
-        console.error('Update failed:', err);
-      }
     });
-}
+  }
+  profilePictureUrl: string = '';
+
+  updateProfilePicture(): void {
+    this.errorMessage = '';
+
+    if (!this.profilePictureUrl?.trim()) {
+      this.toast.show('Please enter a valid UR', 'error');
+      this.errorMessage = 'Please enter a valid URL';
+      return;
+    }
+
+    if (!this.userData?.userId) {
+      this.toast.show('User not identified', 'error');
+      this.errorMessage = 'User not identified';
+      return;
+    }
+
+    try {
+      new URL(this.profilePictureUrl);
+    } catch (e) {
+      this.toast.show('Invalid URL', 'error');
+      this.errorMessage =
+        'Please enter a valid URL (include http:// or https://)';
+      return;
+    }
+
+    this.userService
+      .updateProfilePictureUrl(this.userData.userId, this.profilePictureUrl)
+      .subscribe({
+        next: (updatedUser) => {
+          this.userData = updatedUser;
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+        },
+        error: (err) => {
+          this.errorMessage = 'Failed to update profile picture';
+          this.toast.show('Update', 'error');
+          console.error('Update failed:', err);
+        },
+      });
+  }
   onCancel(): void {
     this.router.navigate(['/home']);
   }

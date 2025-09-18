@@ -1,197 +1,214 @@
-<div class="form-builder-container">
-  <!-- Header Section -->
+<div class="min-h-screen flex flex-col bg-[#121212] text-gray-200">
+  <!-- Header -->
+  <header
+    class="bg-gradient-to-b from-gray-900 to-black shadow-md p-4 flex justify-between items-center"
+  >
+    <h3 class="text-xl font-semibold text-purple-400">Template Builder</h3>
+    <button
+      class="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 px-4 py-2 rounded-lg flex items-center gap-2 transition"
+      (click)="isEditMode ? updateTemplate() : saveTemplate()"
+      [disabled]="isSaving"
+    >
+      <ng-container *ngIf="!isSaving">
+        <i class="bi bi-save"></i>
+        {{ isEditMode ? "Update" : "Save" }} Template
+      </ng-container>
+      <ng-container *ngIf="isSaving">
+        <i class="bi bi-hourglass"></i>
+        {{ isEditMode ? "Updating..." : "Saving..." }}
+      </ng-container>
+    </button>
+  </header>
 
-  <header class="builder-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-12">
-          <div class="d-flex justify-content-between align-items-center">
-            <h3 class="mb-0">Template Builder</h3>
-            <button
-              class="btn btn-save"
-              (click)="isEditMode ? updateTemplate() : saveTemplate()"
-              [disabled]="isSaving"
-            >
-              <span *ngIf="!isSaving">
-                <i class="bi bi-save me-2"></i
-                >{{ isEditMode ? "Update" : "Save" }} Template
-              </span>
-              <span *ngIf="isSaving">
-                <i class="bi bi-hourglass me-2"></i
-                >{{ isEditMode ? "Updating..." : "Saving..." }}
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row align-items-start g-1">
-      <!-- Image Upload -->
-      <div class="col-md-2 text-center align-start">
-        <div class="position-relative profile-picture-container">
+  <!-- Main Content -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Components Panel -->
+    <aside
+      class="w-1/5 bg-[#1a1a24] border-r border-gray-700 p-4 overflow-y-auto"
+    >
+      <h5 class="text-purple-400 font-semibold mb-4 flex items-center gap-2">
+        <i class="bi bi-grid-3x3-gap"></i>Form Components
+      </h5>
+      <div class="grid grid-cols-2 gap-3">
+        <div
+          class="bg-[#2a2a38] hover:bg-purple-600/20 border border-gray-700 rounded-lg p-3 text-center cursor-grab transition"
+          *ngFor="let component of components"
+          draggable="true"
+          (dragstart)="dragStart($event, component)"
+        >
           <div
-            class="profile-image-wrapper"
-            (click)="openImageUrlModal(imageUrlModal)"
+            class="w-12 h-12 flex items-center justify-center bg-purple-600 text-white rounded-full mx-auto mb-2"
           >
-            <img
-              [src]="profilePicturePath || 'images/profiles.png'"
-              class="mb-3 profile-image"
-              width="120"
-              height="120"
-              (error)="handleImageError($event)"
-            />
-            <div class="upload-icon-overlay">
-              <i class="bi bi-camera-fill"></i>
-            </div>
+            <i [class]="component.icon"></i>
           </div>
+          <span class="text-sm font-medium">{{ component.name }}</span>
         </div>
       </div>
-      <div class="col-md-8">
-        <!-- Template Name -->
-        <div class="col-md-10">
-          <label class="form-label">Template Name</label>
+    </aside>
+
+    <!-- Form Canvas -->
+    <main
+      class="w-3/5 bg-[#181820] p-6 overflow-y-auto"
+      droppable
+      (dragover)="dragOver($event)"
+      (drop)="drop($event)"
+    >
+      <div class="grid grid-cols-6 gap-2">
+        <div class="mb-6 col-span-2">
+          <h4 class="text-purple-400 font-semibold">Form Canvas</h4>
+          <p class="text-gray-400 text-sm">
+            Drag and drop components here to build your form
+          </p>
+        </div>
+        <div class="mb-6 col-span-2">
+          <label class="block text-sm mb-1">Template Name</label>
           <input
             type="text"
-            class="form-control form-name-input"
+            class="w-full bg-[#2a2a38] border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:border-purple-500 focus:ring focus:ring-purple-500/30"
             placeholder="Enter template name"
             [(ngModel)]="formName"
           />
         </div>
-
-        <!-- Document Type -->
-        <div class="col-md-10">
-          <label class="form-label">Document Type</label>
-          <select class="form-control" [(ngModel)]="documentType">
-            <option *ngFor="let type of documentTypes" [value]="type">
-              {{ type }}
-            </option>
-          </select>
+        <div class="h-1/2 col-span-2 mb-6 gap-6">
+          <label
+            (click)="openImageUrlModal(imageUrlModal)"
+            class="flex cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+            tabindex="0"
+          >
+            <span for="photo-dropbox" class="flex items-center space-x-2">
+              <svg class="h-6 w-6 stroke-gray-400" viewBox="0 0 256 256">
+                <path
+                  d="M96,208H72A56,56,0,0,1,72,96a57.5,57.5,0,0,1,13.9,1.7"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="24"
+                ></path>
+                <path
+                  d="M80,128a80,80,0,1,1,144,48"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="24"
+                ></path>
+                <polyline
+                  points="118.1 161.9 152 128 185.9 161.9"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="24"
+                ></polyline>
+                <line
+                  x1="152"
+                  y1="208"
+                  x2="152"
+                  y2="128"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="24"
+                ></line>
+              </svg>
+              <span class="text-xs font-medium text-gray-600">
+                Upload Template Image, or
+                <span class="text-blue-600 underline">browse</span>
+              </span>
+            </span>
+          </label>
         </div>
       </div>
-    </div>
-  </header>
+      <div class="bg-[#1f1f2e] rounded-lg shadow-md min-h-[70vh] p-6">
+        <h3 *ngIf="formName" class="text-lg font-bold mb-4">{{ formName }}</h3>
 
-  <!-- Main Content -->
-  <div class="builder-main-content container-fluid">
-    <div class="row">
-      <!-- Components Panel -->
-      <aside class="components-panel col-md-2">
-        <h5 class="components-title">
-          <i class="bi bi-grid-3x3-gap me-2"></i>Form Components
-        </h5>
+        <div
+          *ngFor="let item of formItems; let i = index"
+          class="relative p-4 rounded-md mb-3 bg-[#2a2a38] border transition cursor-pointer"
+          (click)="selectItem(i)"
+          [class.border-purple-500]="selectedItemIndex === i"
+        >
+          <app-dynamicfield-component
+            [config]="item"
+          ></app-dynamicfield-component>
 
-        <div class="component-list">
           <div
-            class="component-item"
-            *ngFor="let component of components"
-            draggable="true"
-            (dragstart)="dragStart($event, component)"
+            *ngIf="selectedItemIndex === i"
+            class="absolute top-2 right-2 flex gap-2"
           >
-            <div class="component-icon">
-              <i [class]="component.icon"></i>
-            </div>
-            <span class="component-name">{{ component.name }}</span>
+            <button
+              class="p-2 text-red-400 border border-red-400 rounded hover:bg-red-500/20"
+            >
+              <i class="bi bi-trash" (click)="removeItem(i)"></i>
+            </button>
+            <button
+              class="p-2 text-purple-400 border border-purple-400 rounded hover:bg-purple-500/20"
+            >
+              <i class="bi bi-gear"></i>
+            </button>
           </div>
         </div>
-      </aside>
 
-      <!-- Form Canvas -->
-      <main
-        class="form-canvas col-md-7"
-        droppable
-        (dragover)="dragOver($event)"
-        (drop)="drop($event)"
+        <div
+          *ngIf="formItems.length === 0"
+          class="flex flex-col items-center justify-center h-64 text-gray-500"
+        >
+          <i class="bi bi-inbox text-4xl text-purple-500 mb-3"></i>
+          <p>Drop form components here to get started</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Properties Panel -->
+    <aside
+      class="w-1/5 bg-[#1a1a24] border-l border-gray-700 p-4 overflow-y-auto"
+    >
+      <h5 class="text-purple-400 font-semibold mb-4 flex items-center gap-2">
+        <i class="bi bi-sliders"></i>Properties
+      </h5>
+
+      <div *ngIf="selectedItemIndex !== null">
+        <h6 class="text-purple-300 font-medium mb-4">
+          {{ formItems[selectedItemIndex].type }} Properties
+        </h6>
+
+        <div class="mb-3">
+          <label class="block text-sm mb-1">Label</label>
+          <input
+            type="text"
+            class="w-full bg-[#2a2a38] border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:border-purple-500 focus:ring focus:ring-purple-500/30"
+            [(ngModel)]="formItems[selectedItemIndex].label"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="block text-sm mb-1">AI Prompt</label>
+          <textarea
+            rows="3"
+            class="w-full bg-[#2a2a38] border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:border-purple-500 focus:ring focus:ring-purple-500/30"
+            [(ngModel)]="formItems[selectedItemIndex].promt"
+          ></textarea>
+        </div>
+
+        <div class="mb-3" *ngIf="formItems[selectedItemIndex].type === 'text'">
+          <label class="block text-sm mb-1">Placeholder</label>
+          <input
+            type="text"
+            class="w-full bg-[#2a2a38] border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:border-purple-500 focus:ring focus:ring-purple-500/30"
+            [(ngModel)]="formItems[selectedItemIndex].placeholder"
+          />
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItemIndex === null"
+        class="flex flex-col items-center justify-center text-gray-500 h-64"
       >
-        <div class="canvas-header">
-          <h4>Form Canvas</h4>
-          <p>Drag and drop components here to build your form</p>
-        </div>
-
-        <div class="form-preview">
-          <h3 *ngIf="formName">{{ formName }}</h3>
-
-          <!-- Dynamically added form components will appear here -->
-          <div
-            *ngFor="let item of formItems; let i = index"
-            class="form-item"
-            (click)="selectItem(i)"
-            [class.selected]="selectedItemIndex === i"
-          >
-            <div class="form-item-content">
-              <app-dynamicfield-component
-                [config]="item"
-              ></app-dynamicfield-component>
-            </div>
-            <div class="form-item-actions" *ngIf="selectedItemIndex === i">
-              <button class="btn btn-sm btn-remove">
-                <i class="bi bi-trash" (click)="removeItem(i)"></i>
-              </button>
-              <button class="btn btn-sm btn-settings ms-2">
-                <i class="bi bi-gear"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="empty-state" *ngIf="formItems.length === 0">
-            <i class="bi bi-inbox"></i>
-            <p>Drop form components here to get started</p>
-          </div>
-        </div>
-      </main>
-
-      <!-- Properties Panel -->
-      <aside class="properties-panel col-md-3">
-        <h5 class="properties-title">
-          <i class="bi bi-sliders me-2"></i>Properties
-        </h5>
-
-        <div class="properties-content" *ngIf="selectedItemIndex !== null">
-          <h6>{{ formItems[selectedItemIndex].type }} Properties</h6>
-
-          <div class="mb-3">
-            <label class="form-label">Label</label>
-            <input
-              type="text"
-              class="form-control"
-              [(ngModel)]="formItems[selectedItemIndex].label"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">AI Prompt</label>
-            <input
-              type="textarea"
-              class="form-control size-5"
-              [(ngModel)]="formItems[selectedItemIndex].promt"
-            />
-          </div>
-
-          <div
-            class="mb-3"
-            *ngIf="formItems[selectedItemIndex].type === 'text'"
-          >
-            <label class="form-label">Placeholder</label>
-            <input
-              type="text"
-              class="form-control"
-              [(ngModel)]="formItems[selectedItemIndex].placeholder"
-            />
-          </div>
-
-          <!-- More property fields based on component type -->
-        </div>
-
-        <div class="empty-state" *ngIf="selectedItemIndex === null">
-          <i class="bi bi-node-plus"></i>
-          <p>Select a component to edit its properties</p>
-        </div>
-      </aside>
-    </div>
+        <i class="bi bi-node-plus text-3xl text-purple-500 mb-2"></i>
+        <p>Select a component to edit its properties</p>
+      </div>
+    </aside>
   </div>
 
   <!-- Footer -->
-  <footer class="builder-footer"></footer>
-  <!-- Add this at the bottom of your template, before the closing </div> -->
   <ng-template #imageUrlModal let-modal>
     <div class="modal-header">
       <h5 class="modal-title">Enter Image URL</h5>
