@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TemplateService } from '../../service/template-service/template-service';
 import { Template, User } from '../../model/template.model';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
