@@ -20,6 +20,7 @@ export class LoginComponent {
   password = '';
   errorMessage = '';
   loading: boolean = false;
+  checked:  boolean = false;
 
   onLogin(): void {
     if (!this.email.trim() || !this.password.trim()) {

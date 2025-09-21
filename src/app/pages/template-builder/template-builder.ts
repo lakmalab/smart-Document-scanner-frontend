@@ -13,11 +13,12 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomToastComponent } from '../../tools/CustomToastComponent/custom-toast-component/custom-toast-component';
 import { CustomToastService } from '../../service/toast/custom-toast.service';
-
+import { Button } from "primeng/button";
+import { ButtonGroupModule } from 'primeng/buttongroup';
 @Component({
   selector: 'app-template-builder',
   standalone: true,
-  imports: [NgIf, FormsModule, NgFor, DynamicfieldComponent],
+  imports: [NgIf, FormsModule, NgFor, DynamicfieldComponent, ButtonGroupModule, Button],
   templateUrl: './template-builder.html',
   styleUrl: './template-builder.css',
 })
@@ -344,4 +345,7 @@ export class TemplateBuilder implements OnInit {
       this.formItems[index].required = !this.formItems[index].required;
     }
   }
+  cancel() {
+ this.router.navigate(['/home']);
+}
 }

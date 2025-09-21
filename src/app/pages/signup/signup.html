@@ -3,9 +3,9 @@
     
     <!-- Left Section -->
     <div class="w-full md:w-1/2 relative">
-      <a href="" class="absolute top-6 left-6 text-white text-2xl font-bold z-10">Join Us</a>
+
       <a href="#"
-         class="absolute top-6 right-6 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm hover:bg-white/20 transition-colors z-10">
+         class="absolute top-6 left-2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm hover:bg-white/20 transition-colors z-10">
          Back to Login →
       </a>
       <div class="relative h-full">
@@ -64,11 +64,12 @@
           <label class="flex items-center space-x-2 cursor-pointer">
             <input type="checkbox" name="terms" [(ngModel)]="termsAccepted"
                    class="rounded bg-[#1c1c24] border-gray-600 text-purple-600 focus:ring-purple-600" required>
-            <span class="text-gray-400">I agree to the <a href="#" class="text-white hover:underline">Terms & Conditions</a></span>
+            <span class="text-gray-400"> I agree to the<p-button label="Terms & Conditions" link /></span>
           </label>
 <p class="text-gray-400 mb-8">
           Already have an account?
-          <a href="#" class="text-white hover:underline">Log in</a>
+          <p-button  href="#" label="Login" link />
+          
         </p>
           <button type="submit" class="w-full bg-purple-600 text-white rounded-3 p-3 hover:bg-purple-700 transition-colors">
             Create account

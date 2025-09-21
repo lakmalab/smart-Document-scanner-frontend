@@ -6,10 +6,12 @@ import { AuthService } from '../../service/auth-service/auth-service';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { User } from '../../model/template.model';
 import { NgIf } from '@angular/common';
+import { Button } from "primeng/button";
+import { ChipModule } from 'primeng/chip';
 
 @Component({
   selector: 'app-header',
-  imports: [NgIf,NgbDropdownModule],
+  imports: [NgIf, NgbDropdownModule, ChipModule, Button],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
