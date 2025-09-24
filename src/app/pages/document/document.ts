@@ -60,7 +60,7 @@ throw new Error('Method not implemented.');
       || JSON.parse(localStorage.getItem('user') || 'null');
 
     if (!this.userData) return;
-
+    this.subscribeToSse()
     this.loadTemplateAndFields();
     this.loadCardList();
   }
@@ -107,6 +107,45 @@ throw new Error('Method not implemented.');
        this.toast.show('Failed to load documents', 'error');}
     });
   }
+
+private subscribeToSse(): void {
+  console.log('🔄 Subscribing to SSE events...');
+
+  this.docService.subscribeToDocumentEvents().subscribe({
+    next: (event: any) => {
+      console.log('📩 SSE event received:', event);
+      const templateId = Number(this.route.snapshot.paramMap.get('templateId'));
+
+      if (event.type === 'documentCreated') {
+       this.loadCardList()
+
+       
+      } else if (event.type === 'documentsUpdate') {
+        const docs: Document2[] = event.data;
+
+        this.cardList = docs
+          .filter(doc => doc.templateId === templateId && doc.extractedFields?.length)
+          .map(doc => ({
+            documentId: doc.documentId,
+            status: doc.status,
+            uploadDate: doc.uploadDate,
+            templateName: doc.templateName,
+            fields: doc.extractedFields
+          }));
+      } else {
+        console.log('🔔 Other SSE event type:', event.type);
+      }
+    },
+    error: (err) => {
+      console.error('❌ SSE connection error:', err);
+      setTimeout(() => {
+        console.log('🔄 Retrying SSE connection...');
+        this.subscribeToSse();
+      }, 5000);
+    },
+    complete: () => console.log('🏁 SSE connection closed')
+  });
+}
 
 handleEdit(index: number): void {
   const doc = this.cardList[index];

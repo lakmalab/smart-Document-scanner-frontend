@@ -9,7 +9,7 @@ import { Button } from "primeng/button";
 
 @Component({
   selector: 'app-template-card',
-  imports: [NgIf, NgFor, HttpClientModule, Button],
+  imports: [NgIf, NgFor, HttpClientModule],
   templateUrl: './template-card.html',
   styleUrl: './template-card.css'
 })
