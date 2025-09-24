@@ -10,7 +10,7 @@ import { Chip } from "primeng/chip";
 
 @Component({
   selector: 'app-settings',
-  imports: [RouterOutlet, RouterModule, AvatarModule, Button, PanelMenuModule, Chip],
+  imports: [RouterOutlet, RouterModule, AvatarModule, Button, PanelMenuModule],
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })

@@ -30,4 +30,41 @@ export class DocumentService {
       extractedFields: fields,
     });
   }
+ subscribeToDocumentEvents(): Observable<any> {
+  return new Observable((observer) => {
+    const eventSource = new EventSource(`${this.api.getBaseUrl()}/api/documents/subscribe`);
+
+    eventSource.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        observer.next({ type: 'message', data: message });
+      } catch (err) {
+        console.error('Error parsing SSE message', err);
+      }
+    };
+
+    eventSource.addEventListener('documentCreated', (event: MessageEvent) => {
+      observer.next({ type: 'documentCreated', data: JSON.parse(event.data) });
+    });
+
+    eventSource.addEventListener('documentsUpdate', (event: MessageEvent) => {
+      observer.next({ type: 'documentsUpdate', data: JSON.parse(event.data) });
+    });
+
+    eventSource.onerror = (error) => {
+      console.error('SSE error:', error);
+      eventSource.close();
+      observer.error(error);
+    };
+
+    // Cleanup
+    return () => {
+      eventSource.close();
+    };
+  });
+}
+
+
+
+
 }

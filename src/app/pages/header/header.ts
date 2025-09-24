@@ -11,7 +11,7 @@ import { ChipModule } from 'primeng/chip';
 
 @Component({
   selector: 'app-header',
-  imports: [NgIf, NgbDropdownModule, ChipModule, Button],
+  imports: [NgIf, NgbDropdownModule, ChipModule],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })

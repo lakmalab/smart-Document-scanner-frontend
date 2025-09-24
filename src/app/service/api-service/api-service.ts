@@ -7,7 +7,10 @@ import { environment } from '../../environment/environment';
 export class ApiService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiBaseUrl;
-
+  
+  getBaseUrl(): string {
+    return this.baseUrl;
+  }
   get<T>(
     endpoint: string,
     params?: HttpParams,
