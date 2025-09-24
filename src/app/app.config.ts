@@ -10,15 +10,26 @@ import {
   withInterceptorsFromDi,
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 
 import { routes } from './app.routes';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { AuthInterceptor } from './auth-interceptor/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import MyPreset from './theme/MyPreset';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimationsAsync(),
+    providePrimeNG({
+            theme: {
+                preset: MyPreset
+                
+            }
+        }),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),

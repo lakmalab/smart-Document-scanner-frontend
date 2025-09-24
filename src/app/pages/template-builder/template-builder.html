@@ -4,20 +4,21 @@
     class="bg-gradient-to-b from-gray-900 to-black shadow-md p-4 flex justify-between items-center"
   >
     <h3 class="text-xl font-semibold text-purple-400">Template Builder</h3>
-    <button
-      class="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 px-4 py-2 rounded-lg flex items-center gap-2 transition"
-      (click)="isEditMode ? updateTemplate() : saveTemplate()"
-      [disabled]="isSaving"
-    >
-      <ng-container *ngIf="!isSaving">
+    <p-buttongroup class="">
+      <p-button label="  " icon="pi pi-check" (click)="isEditMode ? updateTemplate() : saveTemplate()"
+      [disabled]="isSaving" >
+       <ng-container *ngIf="!isSaving">
         <i class="bi bi-save"></i>
         {{ isEditMode ? "Update" : "Save" }} Template
       </ng-container>
       <ng-container *ngIf="isSaving">
         <i class="bi bi-hourglass"></i>
         {{ isEditMode ? "Updating..." : "Saving..." }}
-      </ng-container>
-    </button>
+
+      </ng-container></p-button >
+      <p-button (onClick)="cancel()" label="Cancel" icon="pi pi-times" />
+    </p-buttongroup>
+    
   </header>
 
   <!-- Main Content -->
@@ -250,4 +251,5 @@
       </button>
     </div>
   </ng-template>
+  
 </div>

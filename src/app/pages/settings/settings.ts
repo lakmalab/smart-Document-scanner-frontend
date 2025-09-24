@@ -3,14 +3,21 @@ import { Component } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { UserService } from '../../service/user-service/user-service';
 import { User } from '../../model/template.model';
+import { AvatarModule } from 'primeng/avatar';
+import { Button } from "primeng/button";
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { Chip } from "primeng/chip";
 
 @Component({
   selector: 'app-settings',
-  imports: [RouterOutlet, RouterModule],
+  imports: [RouterOutlet, RouterModule, AvatarModule, Button, PanelMenuModule, Chip],
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })
 export class Settings {
+logout() {
+ this.router.navigate(['/login']);
+}
   userData: User | null = null;
   constructor(
     private router: Router,
@@ -25,7 +32,7 @@ export class Settings {
   api() {
     this.router.navigate(['/settings/api']);
   }
-  handleImageError($event: ErrorEvent) {
+  handleImageError($event: Event) {
     throw new Error('Method not implemented.');
   }
 }

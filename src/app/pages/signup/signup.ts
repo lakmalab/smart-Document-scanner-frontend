@@ -6,10 +6,11 @@ import { NgIf } from '@angular/common';
 import { AuthService } from '../../service/auth-service/auth-service';
 import { RegisterRequest } from '../../model/auth.model';
 import { CustomToastService } from '../../service/toast/custom-toast.service';
+import { Button } from "primeng/button";
 
 @Component({
   selector: 'app-signup',
-  imports: [FormsModule, HttpClientModule, NgIf],
+  imports: [FormsModule, HttpClientModule, NgIf, Button],
   templateUrl: './signup.html',
   styleUrl: './signup.css',
 })

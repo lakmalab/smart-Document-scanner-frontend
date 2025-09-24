@@ -4,11 +4,11 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../service/auth-service/auth-service';
-
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, HttpClientModule, NgIf],
+  imports: [FormsModule, HttpClientModule, NgIf,ButtonModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -19,6 +19,8 @@ export class LoginComponent {
   email = '';
   password = '';
   errorMessage = '';
+  loading: boolean = false;
+  checked:  boolean = false;
 
   onLogin(): void {
     if (!this.email.trim() || !this.password.trim()) {

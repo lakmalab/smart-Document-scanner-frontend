@@ -4,11 +4,12 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, EventEmitter, inject, Input, Output  } from '@angular/core';
 import { TemplateService } from '../../service/template-service/template-service';
 import { ModalService } from '../../service/modal/modal-service';
+import { Button } from "primeng/button";
 
 
 @Component({
   selector: 'app-template-card',
-  imports: [NgIf,NgFor,HttpClientModule],
+  imports: [NgIf, NgFor, HttpClientModule, Button],
   templateUrl: './template-card.html',
   styleUrl: './template-card.css'
 })

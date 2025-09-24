@@ -1,73 +1,77 @@
 <div class="flex min-h-screen bg-gray-100">
   <!-- Sidebar -->
-  <aside class="w-72 bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 flex flex-col p-6 shadow-lg [a]:no-underline">
-
+  <aside
+    class="w-72 bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 flex flex-col p-6 shadow-lg [a]:no-underline"
+  >
     <!-- Profile Section -->
-    <div class="flex items-center space-x-3 mb-10">
-      <img
-        [src]="userData?.profilePicturePath || 'images/profiles.png'"
-        (error)="handleImageError($event)"
-        alt="Profile"
-        class="w-14 h-14 rounded-full ring-2 ring-gray-700"
-      />
-      <div>
-        <h6 class="text-base font-semibold">{{ userData?.name || 'Lakmal Abeyrathne' }}</h6>
-        <a
-         
-          class="text-xs text-danger hover:text-white transition"
-          ><i class="bi bi-lock"></i> Log Out</a
-        >
-      </div>
-    </div>
+     
+    <div class="flex items-center mb-10 gap-4">
+  <!-- Profile Image -->
+  <img 
+    [src]="userData?.profilePicturePath || 'images/profiles.png'"
+    (error)="handleImageError($event)"
+    alt="Profile"
+    class="w-14 h-14 rounded-full ring-2 ring-gray-700"
+  />
+
+  <!-- User Info and Logout Button -->
+  <div class="flex flex-col justify-center gap-1 max-w-xs">
+    <span 
+      class="text-sm font-semibold truncate"
+      title="{{ userData?.name || 'Lakmal Abeyrathne' }}"
+    >
+      {{ userData?.name || 'Lakmal Abeyrathne' }}
+    </span>
+    <p-button
+      label="Log Out"
+      icon="pi pi-lock"
+      styleClass="p-button-text p-button-danger p-button-sm"
+      (onClick)="logout()"
+    ></p-button>
+  </div>
+</div>
+
 
     <!-- Navigation -->
     <nav class="flex-1">
-      <h2 class="text-sm uppercase text-gray-400 tracking-wider mb-4">
-        Settings
-      </h2>
-      <ul class="space-y-2">
-  <li>
-    <a
-      routerLink="edit-profile"
-      routerLinkActive="bg-gray-700 text-white"
-      class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
-    >
-      <i class="bi bi-pencil"></i>
-      <span>Edit Profile</span>
-    </a>
-  </li>
-  <li>
-    <a
-      routerLink="mobile"
-      routerLinkActive="bg-gray-700 text-white"
-      class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
-    >
-      <i class="bi bi-phone"></i>
-      <span>Mobile Pairing</span>
-    </a>
-  </li>
-  <li>
-    <a
-      routerLink="api"
-      routerLinkActive="bg-gray-700 text-white"
-      class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
-    >
-      <i class="bi bi-lock"></i>
-      <span>API</span>
-    </a>
-  </li>
-  <li>
-    <a
-      routerLink="help"
-      routerLinkActive="bg-gray-700 text-white"
-      class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
-    >
-      <i class="bi bi-question-circle"></i>
-      <span>Help</span>
-    </a>
-  </li>
-</ul>
-
+      <ul class="space-y-1">
+        <li>
+          <a
+            routerLink="edit-profile"
+            routerLinkActive="bg-gray-700 text-white"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
+          >
+            <p-button label="Edit Profile" icon="bi bi-person" link="" />
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="mobile"
+            routerLinkActive="bg-gray-700 text-white"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
+          >
+            <p-button label="Mobile Pairing" icon="bi bi-phone" link="" />
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="api"
+            routerLinkActive="bg-gray-700 text-white"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
+          >
+            <p-button label="API" icon="bi bi-lock" link="" />
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="help"
+            routerLinkActive="bg-gray-700 text-white"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition no-underline"
+          >
+            <p-button label="Help" icon="bi bi-question-circle" link="" />
+          </a>
+        </li>
+      </ul>
     </nav>
   </aside>
 

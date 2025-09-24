@@ -1,52 +1,62 @@
 <div class="h-screen bg-gray-900 text-gray-200 flex">
   <!-- Left Panel: Dynamic Form -->
-  <div class="flex flex-col flex-1 bg-gray-800 rounded-l-2xl shadow-lg overflow-hidden">
+  <div
+    class="flex flex-col flex-1 bg-gray-800 rounded-l-2xl shadow-lg overflow-hidden"
+  >
     <!-- Scan Controls -->
-    <div class="flex items-center gap-2 p-4">
-      <span
-        class="px-3 py-1 rounded-full text-sm flex items-center gap-2"
-        [ngClass]="isMobileConnected ? 'bg-green-600' : 'bg-gray-700'"
-      >
-        <i class="bi" [class.bi-phone]="isMobileConnected" [class.bi-phone-x]="!isMobileConnected"></i>
-        {{ isMobileConnected ? 'Mobile Connected' : 'Disconnected' }}
-      </span>
-
-      <select
-        class="bg-gray-700 text-gray-200 rounded-lg p-2 flex-1 focus:outline-none"
-        [(ngModel)]="scanMethod"
-      >
-        <option value="">Select Input Method</option>
-        <option value="camera">Use Mobile Camera</option>
-        <option value="upload">Upload Document</option>
-      </select>
-
-      <button class="bg-indigo-600 hover:bg-indigo-700 p-2 rounded-lg shadow">
-        <i class="bi bi-plus-lg"></i>
-      </button>
-    </div>
-
-    <!-- Template Header -->
-    <div class="px-4 mb-4">
-      <h3 class="text-xl font-semibold">{{ templateName }}</h3>
-      <div *ngIf="templateImage" class="mt-2">
-        <img [src]="templateImage" alt="Template preview" class="w-full h-48 object-cover rounded-lg" />
+    <div class="bg-surface-0 dark:bg-surface-900 shadow-sm p-4 ">
+      <div class="flex justify-between gap-4">
+        <div class="flex flex-col gap-2">
+          <span
+            class="px-3 py-1 rounded-full text-sm flex items-center gap-2"
+            [ngClass]="isMobileConnected ? 'bg-green-600' : 'bg-gray-700'"
+          >
+            <i
+              class="bi"
+              [class.bi-phone]="isMobileConnected"
+              [class.bi-phone-x]="!isMobileConnected"
+            ></i>
+            {{ isMobileConnected ? 'Mobile Connected' : 'Disconnected' }}
+          </span>
+       
+        </div>
+        <div
+          class="flex items-center justify-center bg-linear-to-b from-orange-400 dark:from-orange-300 to-orange-600 dark:to-orange-500 rounded-lg w-10 h-10"
+        >
+          <i
+            class="bi bi-phone text-surface-0 dark:text-surface-900 text-xl! leading-none!"
+          ></i>
+        </div>
       </div>
+      <div class="mt-4">
+        <span
+          class="text-xl -surface-600 dark:text-surface-300 font-extrabold leading-tight"
+          >{{ templateName }}</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 p-4">
     </div>
 
     <!-- Form Fields (Scrollable) -->
-    <div class="flex-1 overflow-y-auto px-4 pb-4">  
-      <form *ngIf="fields.length > 0" (ngSubmit)="onSubmit()" class="flex flex-col space-y-4">
-         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div *ngFor="let field of fields">
-          <label class="block mb-1 text-sm font-medium">{{ field.fieldName }}</label>
-          <input
-            [type]="field.type"
-            [(ngModel)]="field.value"
-            [name]="'field_' + field.fieldId"
-            placeholder="Enter {{ field.fieldName }}"
-            class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
+    <div class="flex-1 overflow-y-auto px-4 pb-4">
+      <form
+        *ngIf="fields.length > 0"
+        (ngSubmit)="onSubmit()"
+        class="flex flex-col space-y-4"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div *ngFor="let field of fields">
+            <label class="block mb-1 text-sm font-medium"
+              >{{ field.fieldName }}</label
+            >
+            <input
+              [type]="field.type"
+              [(ngModel)]="field.value"
+              [name]="'field_' + field.fieldId"
+              placeholder="Enter {{ field.fieldName }}"
+              class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
         </div>
 
         <div class="flex gap-2 mt-4">
@@ -56,7 +66,9 @@
           >
             <span *ngIf="loading" class="spinner"></span>
             <span *ngIf="!loading && !submitted">Process Document</span>
-            <span *ngIf="submitted"><i class="bi bi-check-circle"></i> Processed</span>
+            <span *ngIf="submitted"
+              ><i class="bi bi-check-circle"></i> Processed</span
+            >
           </button>
           <button
             type="button"
@@ -68,7 +80,10 @@
         </div>
       </form>
 
-      <div *ngIf="fields.length === 0" class="flex flex-col items-center justify-center text-gray-400 h-full">
+      <div
+        *ngIf="fields.length === 0"
+        class="flex flex-col items-center justify-center text-gray-400 h-full"
+      >
         <i class="bi bi-file-earmark-excel text-4xl mb-2"></i>
         <p>No document fields found for this template</p>
       </div>
@@ -76,7 +91,9 @@
   </div>
 
   <!-- Right Panel: Document List -->
-  <div class="flex flex-col w-1/2 lg:w-2/5 bg-gray-800 rounded-r-2xl shadow-lg overflow-hidden">
+  <div
+    class="flex flex-col w-1/2 lg:w-2/5 bg-gray-800 rounded-r-2xl shadow-lg overflow-hidden"
+  >
     <!-- Controls -->
     <div class="flex items-center gap-2 p-4">
       <div class="flex items-center bg-gray-700 rounded-lg p-2 flex-1">
@@ -104,12 +121,18 @@
         (click)="openExportModal()"
         [disabled]="isExporting"
       >
-        <i class="bi" [class.bi-hourglass]="isExporting" [class.bi-folder]="!isExporting"></i>
+        <i
+          class="bi"
+          [class.bi-hourglass]="isExporting"
+          [class.bi-folder]="!isExporting"
+        ></i>
         <span gap-2>{{ isExporting ? 'Exporting...' : 'Export' }}</span>
       </button>
     </div>
 
-    <span class="text-gray-400 text-sm px-4 mb-2">{{ filteredDocs().length }} documents found</span>
+    <span class="text-gray-400 text-sm px-4 mb-2"
+      >{{ filteredDocs().length }} documents found</span
+    >
 
     <!-- Scrollable Document List -->
     <div class="flex-1 overflow-y-auto px-4 pb-4 space-y-3">
@@ -121,17 +144,26 @@
         (onApprove)="handleApprove(i)"
       ></app-document-card>
 
-      <div *ngIf="filteredDocs().length === 0" class="flex flex-col items-center justify-center h-full text-gray-400">
+      <div
+        *ngIf="filteredDocs().length === 0"
+        class="flex flex-col items-center justify-center h-full text-gray-400"
+      >
         <i class="bi bi-folder2-open text-4xl mb-2"></i>
         <p>No documents found matching your criteria</p>
       </div>
     </div>
   </div>
-   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" *ngIf="showExportModal">
+  <div
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    *ngIf="showExportModal"
+  >
     <div class="bg-gray-800 rounded-2xl w-96 p-6 space-y-4">
       <div class="flex justify-between items-center">
         <h5 class="text-lg font-semibold">Export Template</h5>
-        <button class="text-gray-400 hover:text-gray-200" (click)="showExportModal=false">
+        <button
+          class="text-gray-400 hover:text-gray-200"
+          (click)="showExportModal=false"
+        >
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
@@ -139,7 +171,10 @@
       <div class="space-y-3">
         <div>
           <label class="block mb-1">Export Type</label>
-          <select [(ngModel)]="exportType" class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none">
+          <select
+            [(ngModel)]="exportType"
+            class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none"
+          >
             <option value="xlsx">Excel (.xlsx)</option>
             <option value="accdb">Access (.accdb)</option>
           </select>
@@ -147,7 +182,10 @@
 
         <div>
           <label class="block mb-1">Document Status</label>
-          <select [(ngModel)]="docStatus" class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none">
+          <select
+            [(ngModel)]="docStatus"
+            class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none"
+          >
             <option value="all">All</option>
             <option value="pending">Pending</option>
             <option value="reviewed">Reviewed</option>
@@ -156,18 +194,36 @@
 
         <div>
           <label class="block mb-1">Start Date</label>
-          <input type="date" [(ngModel)]="startDate" class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none" />
+          <input
+            type="date"
+            [(ngModel)]="startDate"
+            class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none"
+          />
         </div>
 
         <div>
           <label class="block mb-1">End Date</label>
-          <input type="date" [(ngModel)]="endDate" class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none" />
+          <input
+            type="date"
+            [(ngModel)]="endDate"
+            class="w-full p-2 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none"
+          />
         </div>
       </div>
 
       <div class="flex justify-end gap-2 mt-4">
-        <button class="bg-gray-700 hover:bg-gray-600 p-2 rounded-lg" (click)="showExportModal=false">Cancel</button>
-        <button class="bg-indigo-600 hover:bg-indigo-700 p-2 rounded-lg text-white" (click)="confirmExport()">Export</button>
+        <button
+          class="bg-gray-700 hover:bg-gray-600 p-2 rounded-lg"
+          (click)="showExportModal=false"
+        >
+          Cancel
+        </button>
+        <button
+          class="bg-indigo-600 hover:bg-indigo-700 p-2 rounded-lg text-white"
+          (click)="confirmExport()"
+        >
+          Export
+        </button>
       </div>
     </div>
   </div>
